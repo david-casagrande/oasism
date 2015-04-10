@@ -25,6 +25,11 @@
   "devDependencies": {
     "broccoli": "^0.15.3",
     "broccoli-babel-transpiler": "^5.0.0",
+    "broccoli-fast-browserify": "^0.2.5",
     "broccoli-merge-trees": "^0.2.1"
+  },
+  "dependencies": {
+    "raf": "^2.0.4",
+    "rsvp": "^3.0.18"
   }
 }
