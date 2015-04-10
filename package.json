@@ -1,0 +1,30 @@
+{
+  "name": "oasism",
+  "version": "0.0.1",
+  "description": "USF - OASISM",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/david-casagrande/oasism.git"
+  },
+  "keywords": [
+    "chill",
+    "usf",
+    "oasism",
+    "ceremony"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/david-casagrande/oasism/issues"
+  },
+  "homepage": "https://github.com/david-casagrande/oasism",
+  "devDependencies": {
+    "broccoli": "^0.15.3",
+    "broccoli-babel-transpiler": "^5.0.0",
+    "broccoli-merge-trees": "^0.2.1"
+  }
+}
