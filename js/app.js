@@ -5,6 +5,7 @@ import input from './input';
 import SoundCloud from 'common-soundcloud';
 import ee from 'event-emitter';
 import Observer from './actors/observer';
+import Rectanlge from './actors/rectangle';
 
 (function() {
   const canvas = document.createElement('canvas');
@@ -12,6 +13,16 @@ import Observer from './actors/observer';
 
   canvas.width = 600;
   canvas.height = 300;
+
+  const rects = [
+    new Rectanlge(206, 255, 0, 0), //left rocks & skulls
+    new Rectanlge(154, 64, 445, 260), //right rock with large gila
+    new Rectanlge(210, 230, 390, 0), //right rocks top
+    new Rectanlge(65, 220, 340, 0) //right rocks top, a little more left
+
+
+  ];
+  console.log(rects);
 
   document.body.appendChild(canvas);
 
@@ -49,7 +60,7 @@ import Observer from './actors/observer';
   let gilaX = startX;
   let gilaY = startY;
 
-  var observer = new Observer({ resources: resources, eventEmitter: emitter });
+  var observer = new Observer({ resources: resources, eventEmitter: emitter, rects: rects });
 
   function init() {
     lastTime = Date.now();
