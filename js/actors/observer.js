@@ -35,6 +35,11 @@ class Observer {
     ];
   }
 
+  render(ctx, tickCount) {
+    const updated = this.update(tickCount);
+    ctx.drawImage(...updated);
+  }
+
   _registerEvents(eventEmitter) {
     const verticalSpeed = 0.00175;
     const horizontalSpeed = 0.5;
@@ -65,7 +70,6 @@ class Observer {
     this.scale += scale;
 
     const dontMove = checkCollisions(this.rects, this.asRectangle);
-    console.log(dontMove);
     if(dontMove) {
       this.y -= step;
       this.scale -= scale;
@@ -77,7 +81,6 @@ class Observer {
     this.x += step;
 
     const dontMove = checkCollisions(this.rects, this.asRectangle);
-    console.log(dontMove);
     if(dontMove) {
       this.x -= step;
     }
