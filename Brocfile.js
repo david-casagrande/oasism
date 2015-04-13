@@ -14,4 +14,4 @@ var js = 'js';
 js = esTranspiler(js);
 js = browserify(js, { bundleExtension: '.js' });
 
-module.exports = mergeTrees(['public', 'assets', js]);
+module.exports = mergeTrees(['public', 'assets', js, 'node_modules/icono/dist']);
