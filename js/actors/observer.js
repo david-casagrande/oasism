@@ -41,7 +41,7 @@ class Observer {
   }
 
   _registerEvents(eventEmitter) {
-    const verticalSpeed = 0.00175;
+    const verticalSpeed = 0.00275;
     const horizontalSpeed = 0.5;
     eventEmitter.on('up', () => this._moveVertical(-verticalSpeed, -verticalSpeed));
     eventEmitter.on('down', () => this._moveVertical(verticalSpeed, verticalSpeed));
@@ -69,7 +69,15 @@ class Observer {
     this.y += step;
     this.scale += scale;
 
-    const dontMove = checkCollisions(this.rects, this.asRectangle);
+    let dontMove = false;
+    const bottom = this.y + (height * this.scale);
+    if(bottom > 305) { dontMove = true; }
+    if(this.scale < 0) { dontMove = true; }
+
+    if(!dontMove) {
+      dontMove = checkCollisions(this.rects, this.asRectangle);
+    }
+
     if(dontMove) {
       this.y -= step;
       this.scale -= scale;
@@ -80,7 +88,15 @@ class Observer {
     this.walking = true;
     this.x += step;
 
-    const dontMove = checkCollisions(this.rects, this.asRectangle);
+    let dontMove = false;
+    const left = this.x + (width * this.scale);
+    if(left < 0) { dontMove = true; }
+    if(this.x > 600) { dontMove = true; }
+
+    if(!dontMove) {
+      dontMove = checkCollisions(this.rects, this.asRectangle);
+    }
+
     if(dontMove) {
       this.x -= step;
     }

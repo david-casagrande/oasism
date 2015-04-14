@@ -17,7 +17,9 @@ import Rectanlge from './actors/rectangle';
 
   const rects = [
     new Rectanlge(206, 255, 0, 0), //left rocks & skulls
-    new Rectanlge(154, 64, 445, 260), //right rock with large gila
+    new Rectanlge(60, 230, 206, 0), //left rocks & skulls
+    new Rectanlge(20, 50, 266, 150), //left rocks & skulls
+    new Rectanlge(254, 64, 445, 260), //right rock with large gila
     new Rectanlge(210, 230, 390, 0), //right rocks top
     new Rectanlge(65, 220, 340, 0) //right rocks top, a little more left
   ];
@@ -47,7 +49,6 @@ import Rectanlge from './actors/rectangle';
   ]);
   resources.onReady(init);
 
-  let scPlayer;
 
   // The main game loop
   let lastTime;
@@ -58,15 +59,16 @@ import Rectanlge from './actors/rectangle';
   let gilaX = startX;
   let gilaY = startY;
 
-  var observer = new Observer({ resources: resources, eventEmitter: emitter, rects: rects });
-
-  var fgCloud = new Cloud({ resources: resources, image: 'images/clouds-fg.png', step: 0.2 });
-  var mdgCloud = new Cloud({ resources: resources, image: 'images/clouds-mdg.png', step: 0.4, y: -1 });
-  var bgCloud = new Cloud({ resources: resources, image: 'images/clouds-bg.png', step: 0.6 });
+  let observer = new Observer({ resources: resources, eventEmitter: emitter, rects: rects });
+  let fgCloud = new Cloud({ resources: resources, image: 'images/clouds-fg.png', step: 0.2 });
+  let mdgCloud = new Cloud({ resources: resources, image: 'images/clouds-mdg.png', step: 0.4, y: -1 });
+  let bgCloud = new Cloud({ resources: resources, image: 'images/clouds-bg.png', step: 0.6 });
+  let scPlayer;
 
   function init() {
     lastTime = Date.now();
     main();
+
     scPlayer = new SoundCloud('usf-soundcloud');
     scPlayer.on('ready', function() {
       scPlayer.play();
@@ -121,6 +123,11 @@ import Rectanlge from './actors/rectangle';
     ctx.drawImage(resources.get('images/fg.png'), startX, startY);
     ctx.drawImage(resources.get('images/gila-look-right.png'), gilaX, gilaY);
     // ctx.drawImage(resources.get('images/case.png'), startX, startY);
+
+    // rects.forEach(function(rect) {
+    //   ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+    //   ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
+    // });
 
     if(tickCount >= 60) {
       tickCount = 0;
