@@ -1,42 +1,27 @@
 import rsvp from 'rsvp';
 import raf from 'raf';
-import resources from './resources';
-import SoundCloud from 'common-soundcloud';
 import ee from 'event-emitter';
-import Observer from './actors/observer';
-import Cloud from './actors/cloud';
-import Rectanlge from './actors/rectangle';
+import resources from './resources';
+
+import Assets from './assets';
+import AudioPlayer from './audio-player';
 import Canvas from './canvas';
-import Walls from './walls';
+import Cloud from './actors/cloud';
 import InputManager from './input';
+import Observer from './actors/observer';
+import Walls from './walls';
 
 (function() {
   const canvas = new Canvas();
   const ctx = canvas.ctx;
   const emitter = ee();
   const inputManager = new InputManager({ emitter: emitter });
+  const audioPlayer = new AudioPlayer();
 
   canvas.render();
+  audioPlayer.render();
 
-  resources.load([
-    'images/mdg.png',
-    'images/sky.png',
-    'images/fg.png',
-    'images/fg-bush.png',
-    'images/rocks-and-gila.png',
-    'images/mdg-tree.png',
-    'images/mdg-bush.png',
-    'images/bg-trees.png',
-    'images/gila-look-right.png',
-    'images/walk-1.png',
-    'images/walk-2.png',
-    'images/walk-3.png',
-    'images/walk-4.png',
-    'images/case.png',
-    'images/clouds-fg.png',
-    'images/clouds-mdg.png',
-    'images/clouds-bg.png'
-  ]);
+  resources.load(Assets);
   resources.onReady(init);
 
   // The main game loop
@@ -52,37 +37,10 @@ import InputManager from './input';
   let fgCloud = new Cloud({ resources: resources, image: 'images/clouds-fg.png', step: 0.2 });
   let mdgCloud = new Cloud({ resources: resources, image: 'images/clouds-mdg.png', step: 0.4, y: -1 });
   let bgCloud = new Cloud({ resources: resources, image: 'images/clouds-bg.png', step: 0.6 });
-  let scPlayer;
 
   function init() {
     lastTime = Date.now();
     main();
-
-    scPlayer = new SoundCloud('usf-soundcloud');
-    scPlayer.on('ready', function() {
-      scPlayer.play();
-    });
-
-    const soundControl = document.querySelector('.sound-control');
-    const icon = soundControl.querySelector('div');
-
-    soundControl.addEventListener('click', function() {
-      scPlayer.player.isPaused(function(paused) {
-
-        let classList = icon.classList;
-
-        if (paused) {
-          scPlayer.play();
-          classList.add('icono-pause');
-          classList.remove('icono-play');
-        } else {
-          scPlayer.pause();
-          classList.remove('icono-pause');
-          classList.add('icono-play');
-        }
-
-      });
-    })
   };
 
   function main() {
@@ -92,7 +50,6 @@ import InputManager from './input';
     tickCount += 1;
 
     inputManager.handleInput();
-    //handleInput();
 
     ctx.drawImage(resources.get('images/sky.png'), startX, startY);
 

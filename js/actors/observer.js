@@ -20,6 +20,7 @@ class Observer {
     this.y = defaultY;
     this.scale = 1;
     this.walking = false;
+    this.rotate = false;
     this._registerEvents(opts.eventEmitter);
   }
 
@@ -28,7 +29,7 @@ class Observer {
     const img = this.resources.get(walkImage);
     return [
       img,
-      this.x,
+      this.rotate ? -(this.x) - (width*this.scale) : this.x,
       this.y,
       width * this.scale,
       height * this.scale
@@ -36,8 +37,11 @@ class Observer {
   }
 
   render(ctx, tickCount) {
+    ctx.save();
+    ctx.scale(this.rotate ? -1 : 1, 1);
     const updated = this.update(tickCount);
     ctx.drawImage(...updated);
+    ctx.restore();
   }
 
   _registerEvents(eventEmitter) {
@@ -87,6 +91,12 @@ class Observer {
   _moveHorizontal(step) {
     this.walking = true;
     this.x += step;
+
+    if(step > 0) {
+      this.rotate = true;
+    } else {
+      this.rotate = false;
+    }
 
     let dontMove = false;
     const left = this.x + (width * this.scale);
