@@ -1,5 +1,6 @@
 import { checkCollisions } from '../utils/collision';
 import Rectangle from './rectangle';
+import Walls from '../walls';
 
 const urls = [
   'images/walk-1.png',
@@ -19,7 +20,6 @@ class Observer {
     this.y = defaultY;
     this.scale = 1;
     this.walking = false;
-    this.rects = opts.rects;
     this._registerEvents(opts.eventEmitter);
   }
 
@@ -75,7 +75,7 @@ class Observer {
     if(this.scale < 0) { dontMove = true; }
 
     if(!dontMove) {
-      dontMove = checkCollisions(this.rects, this.asRectangle);
+      dontMove = checkCollisions(Walls, this.asRectangle);
     }
 
     if(dontMove) {
@@ -94,7 +94,7 @@ class Observer {
     if(this.x > 600) { dontMove = true; }
 
     if(!dontMove) {
-      dontMove = checkCollisions(this.rects, this.asRectangle);
+      dontMove = checkCollisions(Walls, this.asRectangle);
     }
 
     if(dontMove) {

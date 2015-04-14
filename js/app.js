@@ -1,32 +1,22 @@
 import rsvp from 'rsvp';
 import raf from 'raf';
 import resources from './resources';
-import input from './input';
 import SoundCloud from 'common-soundcloud';
 import ee from 'event-emitter';
 import Observer from './actors/observer';
 import Cloud from './actors/cloud';
 import Rectanlge from './actors/rectangle';
+import Canvas from './canvas';
+import Walls from './walls';
+import InputManager from './input';
 
 (function() {
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
+  const canvas = new Canvas();
+  const ctx = canvas.ctx;
+  const emitter = ee();
+  const inputManager = new InputManager({ emitter: emitter });
 
-  canvas.width = 600;
-  canvas.height = 300;
-
-  const rects = [
-    new Rectanlge(206, 255, 0, 0), //left rocks & skulls
-    new Rectanlge(60, 230, 206, 0), //left rocks & skulls
-    new Rectanlge(20, 50, 266, 150), //left rocks & skulls
-    new Rectanlge(254, 64, 445, 260), //right rock with large gila
-    new Rectanlge(210, 230, 390, 0), //right rocks top
-    new Rectanlge(65, 220, 340, 0) //right rocks top, a little more left
-  ];
-
-  document.body.appendChild(canvas);
-
-  var emitter = ee();
+  canvas.render();
 
   resources.load([
     'images/mdg.png',
@@ -49,7 +39,6 @@ import Rectanlge from './actors/rectangle';
   ]);
   resources.onReady(init);
 
-
   // The main game loop
   let lastTime;
   let startX = -1;
@@ -59,7 +48,7 @@ import Rectanlge from './actors/rectangle';
   let gilaX = startX;
   let gilaY = startY;
 
-  let observer = new Observer({ resources: resources, eventEmitter: emitter, rects: rects });
+  let observer = new Observer({ resources: resources, eventEmitter: emitter });
   let fgCloud = new Cloud({ resources: resources, image: 'images/clouds-fg.png', step: 0.2 });
   let mdgCloud = new Cloud({ resources: resources, image: 'images/clouds-mdg.png', step: 0.4, y: -1 });
   let bgCloud = new Cloud({ resources: resources, image: 'images/clouds-bg.png', step: 0.6 });
@@ -101,7 +90,9 @@ import Rectanlge from './actors/rectangle';
     let dt = (now - lastTime) / 1000.0;
 
     tickCount += 1;
-    handleInput();
+
+    inputManager.handleInput();
+    //handleInput();
 
     ctx.drawImage(resources.get('images/sky.png'), startX, startY);
 
@@ -124,7 +115,7 @@ import Rectanlge from './actors/rectangle';
     ctx.drawImage(resources.get('images/gila-look-right.png'), gilaX, gilaY);
     // ctx.drawImage(resources.get('images/case.png'), startX, startY);
 
-    // rects.forEach(function(rect) {
+    // Walls.forEach(function(rect) {
     //   ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
     //   ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
     // });
@@ -136,31 +127,5 @@ import Rectanlge from './actors/rectangle';
     lastTime = now;
     raf(main);
   };
-
-  function handleInput(dt) {
-    if(input.isDown('DOWN')) {
-      emitter.emit('down');
-    }
-
-    if(input.isDown('UP')) {
-      emitter.emit('up');
-    }
-
-    if(input.isDown('LEFT')) {
-      emitter.emit('left');
-    }
-
-    if(input.isDown('RIGHT')) {
-      emitter.emit('right');
-    }
-
-    if(!input.isDown('DOWN') && !input.isDown('UP') && !input.isDown('LEFT') && !input.isDown('RIGHT')) {
-      emitter.emit('none');
-    }
-
-    if(input.isDown('SPACE')) {
-      console.log('space');
-    }
-  }
 
 })();
