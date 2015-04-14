@@ -38,8 +38,33 @@
         font-weight: 300;
         font-size: 3rem;
         line-height: 3rem;
-        padding: 4rem 0 1rem;
+        padding: 0.5rem 0;
         margin: 0;
+        text-align: right;
+        vertical-align: baseline;
+      }
+
+      h1.artist {
+        text-align: left;
+        padding-bottom: 0;
+      }
+
+      body:before {
+        content: '';
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+        margin-right: -0.25em; /* Adjusts for spacing */
+      }
+
+      .oasism {
+        padding-bottom: 5rem;
+        width: 600px;
+      }
+
+      .centered {
+        display: inline-block;
+        vertical-align: middle;
       }
 
       /*canvas {
@@ -52,7 +77,6 @@
     <!-- <link rel="stylesheet" href="css/app.css"> -->
   </head>
   <body>
-    <h1>OASISM</h1>
     <script type="text/javascript" src="app.js"></script>
   </body>
 

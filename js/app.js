@@ -18,8 +18,23 @@ import Walls from './walls';
   const inputManager = new InputManager({ emitter: emitter });
   const audioPlayer = new AudioPlayer();
 
-  canvas.render();
+  const oasism = document.createElement('div');
+  oasism.classList.add('oasism', 'centered');
+
+  const title = document.createElement('h1');
+  title.innerHTML = 'OASISM';
+
+  const artist = document.createElement('h1');
+  artist.classList.add('artist');
+  artist.innerHTML = 'USF';
+
+  //oasism.appendChild(artist);
+
+  canvas.render(oasism);
   audioPlayer.render();
+
+  oasism.appendChild(title);
+  document.body.appendChild(oasism);
 
   resources.load(Assets);
   resources.onReady(init);
@@ -48,7 +63,6 @@ import Walls from './walls';
     let dt = (now - lastTime) / 1000.0;
 
     tickCount += 1;
-
     inputManager.handleInput();
 
     ctx.drawImage(resources.get('images/sky.png'), startX, startY);

@@ -16,7 +16,7 @@ function buildIframe() {
 function soundcloudWrapper(id) {
   const sc = new SoundCloud(id);
   sc.on('ready', function() {
-    //sc.play();
+    sc.play();
   });
   return sc;
 }
@@ -27,6 +27,9 @@ function soundControl(sc) {
 
   const pause = document.createElement('div');
   pause.classList.add('icono-pause');
+
+  const toggle = document.createElement('div');
+  toggle.classList.add('icono-smile');
 
   pause.addEventListener('click', function() {
 
@@ -48,6 +51,8 @@ function soundControl(sc) {
   });
 
   soundControl.appendChild(pause);
+  //soundControl.appendChild(toggle);
+
   return soundControl;
 }
 

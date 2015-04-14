@@ -7,10 +7,11 @@ class Canvas {
     this.ctx = this.canvas.getContext('2d');
     this.canvas.width = width;
     this.canvas.height = height;
+    this.canvas.classList.add('centered');
   }
 
-  render() {
-    document.body.appendChild(this.canvas);
+  render(el) {
+    el.appendChild(this.canvas);
   }
 }
 
