@@ -34,12 +34,26 @@ class InputManager {
   }
 
   _setupListeners() {
+    const emitter = this.emitter;
+
     document.addEventListener('keydown', function(e) {
       setKey(e, true);
     });
 
     document.addEventListener('keyup', function(e) {
       setKey(e, false);
+    });
+
+    document.addEventListener('click', function(e) {
+
+      if(e.target.tagName.toLowerCase() !== 'canvas') { return; }
+      //polyfill for offsetX/Y
+      var target = e.target || e.srcElement,
+          rect = target.getBoundingClientRect(),
+          offsetX = e.clientX - rect.left,
+          offsetY = e.clientY - rect.top;
+
+      emitter.emit('click', offsetX, offsetY);
     });
 
     window.addEventListener('blur', function() {

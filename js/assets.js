@@ -12,6 +12,8 @@ const Assets = [
   'images/walk-2.png',
   'images/walk-3.png',
   'images/walk-4.png',
+  'images/walk-5.png',
+  'images/walk-6.png',
   'images/case.png',
   'images/clouds-fg.png',
   'images/clouds-mdg.png',
