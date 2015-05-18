@@ -3,17 +3,17 @@ import Rectangle from './rectangle';
 import Walls from '../walls';
 
 const urls = [
-  'images/walk-1.png',
-  'images/walk-2.png',
-  'images/walk-3.png',
-  'images/walk-4.png',
-  'images/walk-5.png',
-  'images/walk-6.png'
+  'images/walk_1.png',
+  'images/walk_2.png',
+  'images/walk_3.png',
+  'images/walk_4.png',
+  'images/walk_5.png',
+  'images/walk_6.png'
 ];
 const defaultX = 325;
 const defaultY = 151;
-const width = 54;
-const height = 105;
+const width = 40;
+const height = 90;
 
 class Observer {
   constructor(opts = {}) {
@@ -61,6 +61,15 @@ class Observer {
 
   _handleClick(x, y) {
     // TODO: refactor
+    if(this.walking) {
+      this.timer.forEach((timer) => {
+        clearTimeout(timer);
+      });
+      this.timer = [];
+      this.walking = false;
+      return;
+    };
+
     let xDiff = Math.floor(this.x - (x - (width/2)));
     let yDiff = Math.floor(this.y - (y - (height/2)));
 
