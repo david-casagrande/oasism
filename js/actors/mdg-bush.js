@@ -1,4 +1,4 @@
-class FGBush {
+class MDGBush {
   constructor(opts = {}) {
     this.x = opts.x || 0;
     this.y = opts.x || 0;
@@ -14,7 +14,7 @@ class FGBush {
   update(ctx, tickCount) {
     if(!this.active) {
       return [
-        this.resources.get('images/fgbush.png'),
+        this.resources.get('images/mdgbush.png'),
         this.x,
         this.y
       ];
@@ -24,27 +24,27 @@ class FGBush {
     var pace = this.counter += 1;
     this.totalCounter += 1;
 
-    if(pace > 0 && pace < 11) {
-      img = this.resources.get('images/fgbush_2.png');
-    } else if(pace >= 11 && pace < 22) {
-      img = this.resources.get('images/fgbush.png');
-    } else if(pace >= 22 && pace < 33) {
-      img = this.resources.get('images/fgbush_2.png');
-    } else if(pace >= 33 && pace < 44) {
-      img = this.resources.get('images/fgbush.png');
+    if(pace > 0 && pace < 13) {
+      img = this.resources.get('images/mdgbush_2.png');
+    } else if(pace >= 13 && pace < 26) {
+      img = this.resources.get('images/mdgbush.png');
+    } else if(pace >= 26 && pace < 39) {
+      img = this.resources.get('images/mdgbush_2.png');
+    } else if(pace >= 39 && pace < 52) {
+      img = this.resources.get('images/mdgbush.png');
     } else {
-      img = this.resources.get('images/fgbush.png');
+      img = this.resources.get('images/mdgbush.png');
     }
 
-    if(this.totalCounter > 11) {
-      this.eventEmitter.emit('fg-leaves-shake');
+    if(this.totalCounter > 52) {
+      // this.eventEmitter.emit('fg-leaves-shake');
     }
 
-    if(this.counter >= 44) {
+    if(this.counter >= 52) {
       this.counter = 0;
     }
 
-    if(this.totalCounter === 88) {
+    if(this.totalCounter === 104) {
       this.counter = 0;
       this.totalCounter = 0;
       this.active = false;
@@ -65,10 +65,11 @@ class FGBush {
   }
 
   _registerEvents(eventEmitter) {
-    eventEmitter.on('click', () => {
+    eventEmitter.on('mdg-bush', () => {
+      if(this.active) { return; }
       this.active = true;
     });
   }
 }
 
-export default FGBush;
+export default MDGBush;

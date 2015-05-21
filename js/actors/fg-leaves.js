@@ -5,14 +5,15 @@ class FGLeaves {
     this.resources = opts.resources;
     this.counter = 0;
     this.active = false;
-    this._registerEvents(opts.eventEmitter);
+    this.eventEmitter = opts.eventEmitter;
+    this._registerEvents();
   }
 
   update(ctx, tickCount) {
     if(!this.active) { return; }
     var img;
     this.counter += 1;
-    var total = 160;
+    var total = 80;
     var pace = total/7;
 
     if(this.counter > 0 && this.counter < pace) {
@@ -31,6 +32,14 @@ class FGLeaves {
       img = this.resources.get('images/fgbush_leaves_7.png');
     } else {
       img = null;
+    }
+
+    if(this.counter > pace*3) {
+      this.eventEmitter.emit('mdg-tree');
+    }
+
+    if(this.counter > pace*5) {
+      this.eventEmitter.emit('mdg-bush');
     }
 
     if(this.counter === total) {
@@ -52,8 +61,9 @@ class FGLeaves {
     }
   }
 
-  _registerEvents(eventEmitter) {
-    eventEmitter.on('click', () => {
+  _registerEvents() {
+    this.eventEmitter.on('fg-leaves-shake', () => {
+      if(this.active) { return; }
       this.active = true;
     });
   }

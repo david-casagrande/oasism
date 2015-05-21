@@ -1,4 +1,4 @@
-class FGBush {
+class MDGTree {
   constructor(opts = {}) {
     this.x = opts.x || 0;
     this.y = opts.x || 0;
@@ -14,7 +14,7 @@ class FGBush {
   update(ctx, tickCount) {
     if(!this.active) {
       return [
-        this.resources.get('images/fgbush.png'),
+        this.resources.get('images/mdgtree.png'),
         this.x,
         this.y
       ];
@@ -25,22 +25,18 @@ class FGBush {
     this.totalCounter += 1;
 
     if(pace > 0 && pace < 11) {
-      img = this.resources.get('images/fgbush_2.png');
+      img = this.resources.get('images/mdgtree.png');
     } else if(pace >= 11 && pace < 22) {
-      img = this.resources.get('images/fgbush.png');
+      img = this.resources.get('images/mdgtree_2.png');
     } else if(pace >= 22 && pace < 33) {
-      img = this.resources.get('images/fgbush_2.png');
+      img = this.resources.get('images/mdgtree.png');
     } else if(pace >= 33 && pace < 44) {
-      img = this.resources.get('images/fgbush.png');
+      img = this.resources.get('images/mdgtree_2.png');
     } else {
-      img = this.resources.get('images/fgbush.png');
+      img = this.resources.get('images/mdgtree.png');
     }
 
-    if(this.totalCounter > 11) {
-      this.eventEmitter.emit('fg-leaves-shake');
-    }
-
-    if(this.counter >= 44) {
+    if(this.counter === 44) {
       this.counter = 0;
     }
 
@@ -65,10 +61,11 @@ class FGBush {
   }
 
   _registerEvents(eventEmitter) {
-    eventEmitter.on('click', () => {
+    eventEmitter.on('mdg-tree', () => {
+      if(this.active) { return; }
       this.active = true;
     });
   }
 }
 
-export default FGBush;
+export default MDGTree;
