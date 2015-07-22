@@ -15,6 +15,7 @@ import FGBush from './actors/fg-bush';
 import MDGBush from './actors/mdg-bush';
 import MDGLeaves from './actors/mdg-leaves';
 import MDGTree from './actors/mdg-tree';
+import Gila from './actors/gila';
 
 (function() {
   const canvas = new Canvas();
@@ -62,6 +63,7 @@ import MDGTree from './actors/mdg-tree';
   let mdgBush = new MDGBush({ resources: resources, eventEmitter: emitter });
   let mdgLeaves = new MDGLeaves({ resources: resources, eventEmitter: emitter });
   let mdgTree = new MDGTree({ resources: resources, eventEmitter: emitter });
+  let gila = new Gila({ resources: resources, eventEmitter: emitter });
 
   function init() {
     lastTime = Date.now();
@@ -77,13 +79,13 @@ import MDGTree from './actors/mdg-tree';
 
     ctx.drawImage(resources.get('images/sky.png'), startX, startY);
 
-    // bgCloud.render(ctx);
-    // mdgCloud.render(ctx);
+    bgCloud.render(ctx);
+    mdgCloud.render(ctx);
 
     ctx.drawImage(resources.get('images/mdg.png'), startX, startY);
     ctx.drawImage(resources.get('images/bg-trees.png'), startX, startY);
 
-    // fgCloud.render(ctx);
+    fgCloud.render(ctx);
 
     // ctx.drawImage(resources.get('images/mdg-bush.png'), startX, startY);
     ctx.drawImage(resources.get('images/rocks-and-gila.png'), startX, startY);
@@ -98,7 +100,9 @@ import MDGTree from './actors/mdg-tree';
     fgBush.render(ctx, tickCount);
     // ctx.drawImage(resources.get('images/fgbush.png'), startX, startY);
     ctx.drawImage(resources.get('images/fg.png'), startX, startY);
-    ctx.drawImage(resources.get('images/gila-look-right.png'), gilaX, gilaY);
+    // gila.render(ctx, tickCount);
+
+    // ctx.drawImage(resources.get('images/gila-look-right.png'), gilaX, gilaY);
 
     // ctx.drawImage(resources.get('images/case.png'), startX, startY);
 

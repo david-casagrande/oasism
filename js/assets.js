@@ -33,7 +33,30 @@ const Assets = [
   'images/case.png',
   'images/clouds-fg.png',
   'images/clouds-mdg.png',
-  'images/clouds-bg.png'
+  'images/clouds-bg.png',
+  'images/gila_entrance_1.png',
+  'images/gila_entrance_2.png',
+  'images/gila_entrance_3.png',
+  'images/gila_entrance_4.png',
+  'images/gila_entrance_5.png',
+  'images/gila_exit_1.png',
+  'images/gila_exit_2.png',
+  'images/gila_exit_3.png',
+  'images/gila_exit_4.png',
+  'images/gila_lookaround_1.png',
+  'images/gila_lookaround_2.png',
+  'images/gila_lookaround_3.png',
+  'images/gila_lookright.png',
+  'images/observer_pack_1.png',
+  'images/observer_pack_2.png',
+  'images/observer_pack_3.png',
+  'images/observer_pack_4.png',
+  'images/observer_pack_rummage_1.png',
+  'images/observer_pack_rummage_2.png',
+  'images/observer_gun_aim_left.png',
+  'images/observer_gun_aim_right.png',
+  'images/observer_gunarm_left.png',
+  'images/observer_gunarm_right.png'
 ];
 
 export default Assets;

@@ -1,7 +1,7 @@
 class FGBush {
   constructor(opts = {}) {
     this.x = opts.x || 0;
-    this.y = opts.x || 0;
+    this.y = opts.y || 0;
     this.resources = opts.resources;
     this.counter = 0;
     this.totalCounter = 0;
