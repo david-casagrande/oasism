@@ -39,7 +39,7 @@ import Gila from './actors/gila';
   canvas.render(oasism);
   // audioPlayer.render();
 
-  oasism.appendChild(title);
+  // oasism.appendChild(title);
   document.body.appendChild(oasism);
 
   resources.load(Assets);
@@ -100,7 +100,7 @@ import Gila from './actors/gila';
     fgBush.render(ctx, tickCount);
     // ctx.drawImage(resources.get('images/fgbush.png'), startX, startY);
     ctx.drawImage(resources.get('images/fg.png'), startX, startY);
-    // gila.render(ctx, tickCount);
+    gila.render(ctx, tickCount);
 
     // ctx.drawImage(resources.get('images/gila-look-right.png'), gilaX, gilaY);
 
