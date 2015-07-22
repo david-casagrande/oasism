@@ -48,11 +48,11 @@ class Observer {
     this.kneelingCounter = 0;
   }
 
-  update() {
-    const walkImage = this._walkImage();
+  update(ctx) {
+    const walkImage = this._walkImage(ctx);
     const img = this.resources.get(walkImage);
     this._updatePosition();
-    // console.log(this.rotate);
+
     return [
       img,
       this.rotate ? -(this.x) - (width*this.scale) : this.x,
@@ -65,19 +65,15 @@ class Observer {
   render(ctx, tickCount) {
     ctx.save();
     ctx.scale(this.rotate ? -1 : 1, 1);
-    const updated = this.update();
+    const updated = this.update(ctx);
     ctx.drawImage(...updated);
+    if(this.kneeling && this.kneelingCounter > 90) {
+      this._gunArm(ctx);
+    }
     ctx.restore();
   }
 
   _registerEvents(eventEmitter) {
-    const verticalSpeed = 0.16;//0.00275;
-    const horizontalSpeed = 0.16;
-    // eventEmitter.on('up', () => this._moveVertical(-verticalSpeed, -verticalSpeed));
-    // eventEmitter.on('down', () => this._moveVertical(verticalSpeed, verticalSpeed));
-    // eventEmitter.on('right', () => this._moveHorizontal(horizontalSpeed));
-    // eventEmitter.on('left', () => this._moveHorizontal(-horizontalSpeed));
-    // eventEmitter.on('none', () => this._stopWalking());
     eventEmitter.on('click', (x, y) =>  {
       this.imgCounter = 0;
       this._handleClick(x,y);
@@ -183,17 +179,13 @@ class Observer {
     } else {
       img = urls[12];
     }
-// console.log(this.kneelingCounter);
-    if(this.kneelingCounter >= 90) {
-      // this.kneelingCounter = 0;
-      // this.width = width;
-      // this.height = height;
-      // this.x += kneelingWidthOffset;
-      // this.y += kneelingHeightOffset;
-      // this.kneeling = false;
-    }
 
     return img;
+  }
+
+  _gunArm(ctx) {
+    const img = this.resources.get(urls[14]);
+    ctx.drawImage(img, this.rotate ? -(this.x) - (width*this.scale) : this.x, this.y, kneelingWidth, kneelingHeight);
   }
 
   _updatePosition() {
