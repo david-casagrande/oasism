@@ -10,6 +10,12 @@ import Cloud from './actors/cloud';
 import InputManager from './input';
 import Observer from './actors/observer';
 import Walls from './walls';
+import FGLeaves from './actors/fg-leaves';
+import FGBush from './actors/fg-bush';
+import MDGBush from './actors/mdg-bush';
+import MDGLeaves from './actors/mdg-leaves';
+import MDGTree from './actors/mdg-tree';
+import Gila from './actors/gila';
 
 (function() {
   const canvas = new Canvas();
@@ -31,9 +37,9 @@ import Walls from './walls';
   //oasism.appendChild(artist);
 
   canvas.render(oasism);
-  audioPlayer.render();
+  // audioPlayer.render();
 
-  oasism.appendChild(title);
+  // oasism.appendChild(title);
   document.body.appendChild(oasism);
 
   resources.load(Assets);
@@ -41,8 +47,8 @@ import Walls from './walls';
 
   // The main game loop
   let lastTime;
-  let startX = -1;
-  let startY = -1;
+  let startX = 0;
+  let startY = 0;
   let tickCount = 0;
   let ticksPerFrame = ticksPerFrame || 0;
   let gilaX = startX;
@@ -52,6 +58,12 @@ import Walls from './walls';
   let fgCloud = new Cloud({ resources: resources, image: 'images/clouds-fg.png', step: 0.2 });
   let mdgCloud = new Cloud({ resources: resources, image: 'images/clouds-mdg.png', step: 0.4, y: -1 });
   let bgCloud = new Cloud({ resources: resources, image: 'images/clouds-bg.png', step: 0.6 });
+  let fgLeaves = new FGLeaves({ resources: resources, eventEmitter: emitter });
+  let fgBush = new FGBush({ resources: resources, eventEmitter: emitter });
+  let mdgBush = new MDGBush({ resources: resources, eventEmitter: emitter });
+  let mdgLeaves = new MDGLeaves({ resources: resources, eventEmitter: emitter });
+  let mdgTree = new MDGTree({ resources: resources, eventEmitter: emitter });
+  let gila = new Gila({ resources: resources, eventEmitter: emitter });
 
   function init() {
     lastTime = Date.now();
@@ -75,15 +87,23 @@ import Walls from './walls';
 
     fgCloud.render(ctx);
 
-    ctx.drawImage(resources.get('images/mdg-bush.png'), startX, startY);
+    // ctx.drawImage(resources.get('images/mdg-bush.png'), startX, startY);
     ctx.drawImage(resources.get('images/rocks-and-gila.png'), startX, startY);
-    ctx.drawImage(resources.get('images/mdg-tree.png'), startX, startY);
+    // ctx.drawImage(resources.get('images/mdg-tree.png'), startX, startY);
+    mdgBush.render(ctx, tickCount);
+    mdgLeaves.render(ctx, tickCount);
+    mdgTree.render(ctx, tickCount);
 
+    fgLeaves.render(ctx, tickCount);
     observer.render(ctx, tickCount);
 
-    ctx.drawImage(resources.get('images/fg-bush.png'), startX, startY);
+    fgBush.render(ctx, tickCount);
+    // ctx.drawImage(resources.get('images/fgbush.png'), startX, startY);
     ctx.drawImage(resources.get('images/fg.png'), startX, startY);
-    ctx.drawImage(resources.get('images/gila-look-right.png'), gilaX, gilaY);
+    gila.render(ctx, tickCount);
+
+    // ctx.drawImage(resources.get('images/gila-look-right.png'), gilaX, gilaY);
+
     // ctx.drawImage(resources.get('images/case.png'), startX, startY);
 
     // Walls.forEach(function(rect) {
