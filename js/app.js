@@ -37,7 +37,7 @@ import Gila from './actors/gila';
   //oasism.appendChild(artist);
 
   canvas.render(oasism);
-  // audioPlayer.render();
+  audioPlayer.render();
 
   // oasism.appendChild(title);
   document.body.appendChild(oasism);
