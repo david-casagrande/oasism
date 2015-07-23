@@ -66,8 +66,17 @@ class Observer {
     //if observer is kneeling and not in the process of kneeling then draw the gun
     if(this.kneeling && this.kneelingCounter > 90) {
       ctx.save();
-      ctx.translate(this.gunArmArgs[1], this.gunArmArgs[2]);
-      ctx.translate(this.gunArmArgs[3]/2, this.gunArmArgs[4]/2);
+      if(this.rotate) {
+        if(this.kneelingLeft) {
+          ctx.translate(this._rotateX(this.gunArmArgs[1], kneelingWidth + 9), this.gunArmArgs[2] - 2);
+        } else {
+          ctx.translate(this._rotateX(this.gunArmArgs[1], kneelingWidth + 8), this.gunArmArgs[2] + 4);
+        }
+        ctx.translate(this.gunArmArgs[3]/2, this.gunArmArgs[4]/2);
+      } else {
+        ctx.translate(this.gunArmArgs[1], this.gunArmArgs[2]);
+        ctx.translate(this.gunArmArgs[3]/2, this.gunArmArgs[4]/2);
+      }
       ctx.rotate(this.mouseMoveRad);
       ctx.drawImage(...[
         this.gunArmArgs[0],
@@ -305,7 +314,8 @@ class Observer {
   get gunArmArgs() {
     let img;
     if(this.rotate) {
-      img = this.kneelingLeft ? urls[15] : urls[14];
+      // img = this.kneelingLeft ? urls[15] : urls[14];
+      img = this.kneelingLeft ? urls[14] : urls[15];
     } else {
       img = this.kneelingLeft ? urls[14] : urls[15];
     }
@@ -333,7 +343,6 @@ class Observer {
   get mouseMoveRad() {
     const radian = this._mouseMoveRad;
     const lowerLimit = this.kneelingLeft ? -0.25 : -0.6;
-    // console.log(radian);
     const upperLimit = this.kneelingLeft ? 0.8 : 0.5;
     if(radian < lowerLimit) {
       return lowerLimit;
