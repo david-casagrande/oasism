@@ -40,7 +40,7 @@ class Observer {
     this.walking = false;
     this.kneeling = false;
     this.rotate = false;
-    this.imgCounter = 0;
+    this.walkingCounter = 0;
     this.timer = [];
     this._registerEvents(opts.eventEmitter);
     this.width = width;
@@ -48,34 +48,31 @@ class Observer {
     this.kneelingCounter = 0;
   }
 
-  update(ctx) {
-    const walkImage = this._walkImage(ctx);
-    const img = this.resources.get(walkImage);
+  render(ctx, tickCount) {
     this._updatePosition();
 
-    return [
-      img,
-      this.rotate ? -(this.x) - (width*this.scale) : this.x,
-      this.y,
-      this.width * this.scale,
-      this.height * this.scale
-    ];
-  }
-
-  render(ctx, tickCount) {
     ctx.save();
     ctx.scale(this.rotate ? -1 : 1, 1);
-    const updated = this.update(ctx);
-    ctx.drawImage(...updated);
+
+    //draw observer walking/kneeling
+    const observerArgs = this.kneeling ? this.kneelingObserverArgs : this.walkingObserverArgs;
+    ctx.drawImage(...observerArgs);
+
+    //if observer is kneeling and not in the process of kneeling then draw the gun
     if(this.kneeling && this.kneelingCounter > 90) {
-      this._gunArm(ctx);
+      ctx.drawImage(...this.gunArmArgs);
     }
+
     ctx.restore();
+  }
+
+  _rotateX(x, objWidth) {
+    return this.rotate ? -(x) - objWidth : x;
   }
 
   _registerEvents(eventEmitter) {
     eventEmitter.on('click', (x, y) =>  {
-      this.imgCounter = 0;
+      this.walkingCounter = 0;
       this._handleClick(x,y);
     });
   }
@@ -85,84 +82,53 @@ class Observer {
     if(this.walking) {
       this.walking = false;
       return;
-    } else {
-      this.walking = true;
     }
 
-    //check if user has clicked on the observer
-    const diffX = this.kneeling ? (this.x + (this.rotate ? -kneelingWidthOffset : kneelingWidthOffset)) : this.x;
-    let diff;
-
-    if(diffX < x) {
-      diff = x - diffX;
-    } else {
-      diff = (diffX + width) - x;
-    }
-
-    //if user has clicked observer make him kneel or stand up
-    if(diff <= width + 10) {
-      if(this.kneeling) {
-        this.kneelingCounter = 0;
-      }
-
-      this.walking = false;
-      if(this.rotate) {
-        this.x += this.kneeling ? -kneelingWidthOffset : kneelingWidthOffset;
-      } else {
-        this.x -= this.kneeling ? -kneelingWidthOffset : kneelingWidthOffset;
-      }
-
-      this.y -= this.kneeling ? -kneelingHeightOffset : kneelingHeightOffset;
-      this.width = this.kneeling ? width : kneelingWidth;
-      this.height = this.kneeling ? height : kneelingHeight;
+    //detect click on observer or outside of observer
+    if(x > this.x && x < (this.x + width)) {
+      //set kneeling to its inverse and reset the counter
+      this.kneelingCounter = 0;
       this.kneeling = !this.kneeling;
-
-      return;
+    } else {
+      //get observer walking
+      this.walking = true;
+      this.newX =  Math.floor(x - (width/2));
+      this.newY = Math.floor(y - (height));
     }
-
-    //if observer is kneeling we dont need to adjust the x/y position
-    if(this.kneeling) { return; }
-
-    this.newX =  Math.floor(x - (width/2));
-    this.newY = Math.floor(y - (height));
   }
 
-  _walkImage() {
-    if(this.kneeling) {
-      return this._kneelingImg();
-    }
-
+  _walkingImage() {
     if(!this.walking) { return urls[0]; }
 
-    this.imgCounter += 1;
-    var img;
+    this.walkingCounter += 1;
+    let img;
 
-    if(this.imgCounter < 15) {
+    if(this.walkingCounter < 15) {
       img = urls[0];
-    } else if(this.imgCounter >= 15 && this.imgCounter < 30) {
+    } else if(this.walkingCounter >= 15 && this.walkingCounter < 30) {
       img = urls[1];
-    } else if(this.imgCounter >= 30 && this.imgCounter < 45) {
+    } else if(this.walkingCounter >= 30 && this.walkingCounter < 45) {
       img = urls[2];
-    } else if(this.imgCounter >= 45 && this.imgCounter < 60) {
+    } else if(this.walkingCounter >= 45 && this.walkingCounter < 60) {
       img = urls[3];
-    } else if(this.imgCounter >= 60 && this.imgCounter < 75) {
+    } else if(this.walkingCounter >= 60 && this.walkingCounter < 75) {
       img = urls[4];
-    } else if(this.imgCounter >= 75 && this.imgCounter <= 90) {
+    } else if(this.walkingCounter >= 75 && this.walkingCounter <= 90) {
       img = urls[5];
     } else {
       img = urls[0];
     }
 
-    if(this.imgCounter >= 90) {
-      this.imgCounter = 0;
+    if(this.walkingCounter >= 90) {
+      this.walkingCounter = 0;
     }
 
     return img;
   }
 
-  _kneelingImg() {
+  _kneelingImage() {
     this.kneelingCounter += 1;
-    var img;
+    let img;
 
     if(this.kneelingCounter < 15) {
       img = urls[6];
@@ -181,11 +147,6 @@ class Observer {
     }
 
     return img;
-  }
-
-  _gunArm(ctx) {
-    const img = this.resources.get(urls[14]);
-    ctx.drawImage(img, this.rotate ? -(this.x) - (width*this.scale) : this.x, this.y, kneelingWidth, kneelingHeight);
   }
 
   _updatePosition() {
@@ -217,7 +178,7 @@ class Observer {
     var yStep = moveYNeg ? -0.25 : 0.25;
 
     this._moveHorizontal(xStep, xStep);
-    // this._moveVertical(yStep, yStep);
+    this._moveVertical(yStep, yStep);
   }
 
   _moveVertical(step, scale) {
@@ -270,6 +231,44 @@ class Observer {
 
   get asRectangle() {
     return new Rectangle(width*this.scale, height*this.scale, this.x, this.y);
+  }
+
+  get kneelingX() {
+    return this.x - kneelingWidthOffset;
+  }
+
+  get kneelingY() {
+    return this.y - kneelingHeightOffset;
+  }
+
+  get walkingObserverArgs() {
+    return [
+      this.resources.get(this._walkingImage()),
+      this._rotateX(this.x, width),
+      this.y,
+      this.width,
+      this.height
+    ];
+  }
+
+  get kneelingObserverArgs() {
+    return [
+      this.resources.get(this._kneelingImage()),
+      this._rotateX(this.kneelingX, kneelingWidth - 10),
+      this.kneelingY,
+      kneelingWidth,
+      kneelingHeight
+    ];
+  }
+
+  get gunArmArgs() {
+    return [
+      this.resources.get(urls[14]),
+      this._rotateX(this.kneelingX, kneelingWidth - 10),
+      this.kneelingY,
+      kneelingWidth,
+      kneelingHeight
+    ];
   }
 }
 
