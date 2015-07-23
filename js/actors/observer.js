@@ -84,14 +84,14 @@ class Observer {
   }
 
   _handleClick(x, y) {
-    // TODO: refactor
+    //always stop walking
     if(this.walking) {
       this.walking = false;
       return;
     }
 
-    //detect click on observer or outside of observer
-    if(x > this.x && x < (this.x + width)) {
+    //detect click is on observer or outside of observer
+    if(x > this.x && x < (this.x + width) && y > this.y && y < (this.y + height)) {
       //set kneeling to its inverse and reset the counter
       this.kneelingCounter = 0;
       this.kneeling = !this.kneeling;
