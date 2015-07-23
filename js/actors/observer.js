@@ -1,6 +1,7 @@
 import { checkCollisions } from '../utils/collision';
 import Rectangle from './rectangle';
 import Walls from '../walls';
+import BlastAreas from '../blast-areas';
 
 const urls = [
   'images/walk_1.png',
@@ -54,6 +55,15 @@ class Observer {
   render(ctx, tickCount) {
     this._updatePosition();
 
+    this._drawObserver(ctx);
+
+    //if observer is kneeling and not in the process of kneeling then draw the gun
+    if(this.kneeling && this.kneelingCounter > 90) {
+      this._drawGunArm(ctx);
+    }
+  }
+
+  _drawObserver(ctx) {
     ctx.save();
     ctx.scale(this.rotate ? -1 : 1, 1);
 
@@ -62,32 +72,31 @@ class Observer {
     ctx.drawImage(...observerArgs);
 
     ctx.restore();
+  }
 
-    //if observer is kneeling and not in the process of kneeling then draw the gun
-    if(this.kneeling && this.kneelingCounter > 90) {
-      ctx.save();
-      if(this.rotate) {
-        if(this.kneelingLeft) {
-          ctx.translate(this._rotateX(this.gunArmArgs[1], kneelingWidth + 9), this.gunArmArgs[2] - 2);
-        } else {
-          ctx.translate(this._rotateX(this.gunArmArgs[1], kneelingWidth + 8), this.gunArmArgs[2] + 4);
-        }
-        ctx.translate(this.gunArmArgs[3]/2, this.gunArmArgs[4]/2);
+  _drawGunArm(ctx) {
+    ctx.save();
+    if(this.rotate) {
+      if(this.kneelingLeft) {
+        ctx.translate(this._rotateX(this.gunArmArgs[1], kneelingWidth + 9), this.gunArmArgs[2] - 2);
       } else {
-        ctx.translate(this.gunArmArgs[1], this.gunArmArgs[2]);
-        ctx.translate(this.gunArmArgs[3]/2, this.gunArmArgs[4]/2);
+        ctx.translate(this._rotateX(this.gunArmArgs[1], kneelingWidth + 8), this.gunArmArgs[2] + 4);
       }
-      ctx.rotate(this.mouseMoveRad);
-      ctx.drawImage(...[
-        this.gunArmArgs[0],
-        -(this.gunArmArgs[3]/2),
-        -(this.gunArmArgs[4]/2),
-        this.gunArmArgs[3],
-        this.gunArmArgs[4]
-      ]);
-      ctx.restore();
+    } else {
+      ctx.translate(this.gunArmArgs[1], this.gunArmArgs[2]);
     }
 
+    ctx.translate(this.gunArmArgs[3]/2, this.gunArmArgs[4]/2);
+
+    ctx.rotate(this.mouseMoveRad);
+    ctx.drawImage(...[
+      this.gunArmArgs[0],
+      -(this.gunArmArgs[3]/2),
+      -(this.gunArmArgs[4]/2),
+      this.gunArmArgs[3],
+      this.gunArmArgs[4]
+    ]);
+    ctx.restore();
   }
 
   _rotateX(x, objWidth) {
@@ -119,10 +128,19 @@ class Observer {
       this.kneelingCounter = 0;
       this.kneeling = !this.kneeling;
     } else {
-      //get observer walking
-      this.walking = true;
-      this.newX =  Math.floor(x - (width/2));
-      this.newY = Math.floor(y - (height));
+      //shoot the gun
+      if(this.kneeling) {
+        BlastAreas.forEach((area) => {
+          if(x > area.x && x < area.x + area.width && y > area.y && y < area.y + area.height) {
+            area.blasted = true;
+          }
+        });
+      } else {
+        //get observer walking
+        this.walking = true;
+        this.newX =  Math.floor(x - (width/2));
+        this.newY = Math.floor(y - (height));
+      }
     }
   }
 

@@ -16,6 +16,7 @@ import MDGBush from './actors/mdg-bush';
 import MDGLeaves from './actors/mdg-leaves';
 import MDGTree from './actors/mdg-tree';
 import Gila from './actors/gila';
+import BlastAreas from './blast-areas';
 
 (function() {
   const canvas = new Canvas();
@@ -93,10 +94,19 @@ import Gila from './actors/gila';
     mdgTree.render(ctx, tickCount);
 
     fgLeaves.render(ctx, tickCount);
+
+    BlastAreas.forEach((rect) => {
+      const img = rect.blasted ? rect.imgOl : rect.img
+      ctx.drawImage(resources.get(img), startX, startY);
+
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+      ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
+    });
+
     observer.render(ctx, tickCount);
 
     fgBush.render(ctx, tickCount);
-    ctx.drawImage(resources.get('images/fg.png'), startX, startY);
+    ctx.drawImage(resources.get('images/fg.png'), startX - 1, startY - 1);
     gila.render(ctx, tickCount);
 
     // Walls.forEach(function(rect) {

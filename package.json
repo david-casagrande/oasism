@@ -4,7 +4,8 @@
   "description": "USF - OASISM",
   "main": "index.js",
   "scripts": {
-    "test": "npm test"
+    "test": "npm test",
+    "build": "rm -rf dist && broccoli build dist"
   },
   "repository": {
     "type": "git",
