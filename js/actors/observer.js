@@ -28,6 +28,7 @@ const kneelingWidth = 300;
 const kneelingHeight = 300;
 const kneelingWidthOffset = kneelingWidth/2.5;
 const kneelingHeightOffset = kneelingHeight/2.9;
+const TO_RADIANS = Math.PI/180;
 
 class Observer {
   constructor(opts = {}) {
@@ -47,6 +48,7 @@ class Observer {
     this.height = height;
     this.kneelingCounter = 0;
     this.kneelingLeft = true;
+    this._mouseMoveRad = 0;
   }
 
   render(ctx, tickCount) {
@@ -59,12 +61,24 @@ class Observer {
     const observerArgs = this.kneeling ? this.kneelingObserverArgs : this.walkingObserverArgs;
     ctx.drawImage(...observerArgs);
 
+    ctx.restore();
+
     //if observer is kneeling and not in the process of kneeling then draw the gun
     if(this.kneeling && this.kneelingCounter > 90) {
-      ctx.drawImage(...this.gunArmArgs);
+      ctx.save();
+      ctx.translate(this.gunArmArgs[1], this.gunArmArgs[2]);
+      ctx.translate(this.gunArmArgs[3]/2, this.gunArmArgs[4]/2);
+      ctx.rotate(this.mouseMoveRad);
+      ctx.drawImage(...[
+        this.gunArmArgs[0],
+        -(this.gunArmArgs[3]/2),
+        -(this.gunArmArgs[4]/2),
+        this.gunArmArgs[3],
+        this.gunArmArgs[4]
+      ]);
+      ctx.restore();
     }
 
-    ctx.restore();
   }
 
   _rotateX(x, objWidth) {
@@ -106,6 +120,18 @@ class Observer {
   _handleMouseMove(x, y) {
     //left side of observer
     this.kneelingLeft = x - (width/2) < this.x;
+
+    // get angle
+    let deltaX;
+    let deltaY;
+    if(this.kneelingLeft) {
+      deltaX = this.x - x;
+      deltaY = this.y - y;
+    } else {
+      deltaX = (x - this.x);
+      deltaY = -(this.y - y);
+    }
+    this.mouseMoveRad = Math.atan2(deltaY, deltaX);
   }
 
   _walkingImage() {
@@ -298,6 +324,24 @@ class Observer {
       kneelingWidth,
       kneelingHeight
     ];
+  }
+
+  set mouseMoveRad(newValue) {
+    this._mouseMoveRad = newValue;
+  }
+
+  get mouseMoveRad() {
+    const radian = this._mouseMoveRad;
+    const lowerLimit = this.kneelingLeft ? -0.25 : -0.6;
+    // console.log(radian);
+    const upperLimit = this.kneelingLeft ? 0.8 : 0.5;
+    if(radian < lowerLimit) {
+      return lowerLimit;
+    } else if(radian > upperLimit) {
+      return upperLimit;
+    } else {
+      return radian;
+    }
   }
 }
 
