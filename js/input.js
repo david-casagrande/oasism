@@ -23,6 +23,15 @@ function setKey(event, status) {
   pressedKeys[key] = status;
 }
 
+function targetOffsets(e) {
+  const target = e.target || e.srcElement;
+  const rect = target.getBoundingClientRect();
+  return {
+    offsetX: e.clientX - rect.left,
+    offsetY: e.clientY - rect.top
+  };
+}
+
 function isDown(key) {
   return pressedKeys[key.toUpperCase()];
 }
@@ -45,15 +54,15 @@ class InputManager {
     });
 
     document.addEventListener('click', function(e) {
-
       if(e.target.tagName.toLowerCase() !== 'canvas') { return; }
-      //polyfill for offsetX/Y
-      var target = e.target || e.srcElement,
-          rect = target.getBoundingClientRect(),
-          offsetX = e.clientX - rect.left,
-          offsetY = e.clientY - rect.top;
+      const target = targetOffsets(e);
+      emitter.emit('click', target.offsetX, target.offsetY);
+    });
 
-      emitter.emit('click', offsetX, offsetY);
+    document.addEventListener('mousemove', function(e) {
+      if(e.target.tagName.toLowerCase() !== 'canvas') { return; }
+      const target = targetOffsets(e);
+      emitter.emit('mousemove', target.offsetX, target.offsetY);
     });
 
     window.addEventListener('blur', function() {

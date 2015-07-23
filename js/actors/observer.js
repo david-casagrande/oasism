@@ -46,6 +46,7 @@ class Observer {
     this.width = width;
     this.height = height;
     this.kneelingCounter = 0;
+    this.kneelingLeft = true;
   }
 
   render(ctx, tickCount) {
@@ -73,7 +74,12 @@ class Observer {
   _registerEvents(eventEmitter) {
     eventEmitter.on('click', (x, y) =>  {
       this.walkingCounter = 0;
-      this._handleClick(x,y);
+      this._handleClick(x, y);
+    });
+
+    eventEmitter.on('mousemove', (x, y) =>  {
+      if(!this.kneeling) { return; };
+      this._handleMouseMove(x, y);
     });
   }
 
@@ -95,6 +101,11 @@ class Observer {
       this.newX =  Math.floor(x - (width/2));
       this.newY = Math.floor(y - (height));
     }
+  }
+
+  _handleMouseMove(x, y) {
+    //left side of observer
+    this.kneelingLeft = x - (width/2) < this.x;
   }
 
   _walkingImage() {
@@ -143,7 +154,11 @@ class Observer {
     } else if(this.kneelingCounter >= 75 && this.kneelingCounter <= 90) {
       img = urls[11];
     } else {
-      img = urls[12];
+      if(this.rotate) {
+        img = this.kneelingLeft ? urls[13] : urls[12];
+      } else {
+        img = this.kneelingLeft ? urls[12] : urls[13];
+      }
     }
 
     return img;
@@ -262,9 +277,23 @@ class Observer {
   }
 
   get gunArmArgs() {
+    let img;
+    if(this.rotate) {
+      img = this.kneelingLeft ? urls[15] : urls[14];
+    } else {
+      img = this.kneelingLeft ? urls[14] : urls[15];
+    }
+
+    let _kneelingX;
+    if(this.rotate) {
+      _kneelingX = this.kneelingLeft ? this.kneelingX - 14 : this.kneelingX - 6;
+    } else {
+      _kneelingX = this.kneelingLeft ? this.kneelingX : this.kneelingX + 6;
+    }
+
     return [
-      this.resources.get(urls[14]),
-      this._rotateX(this.kneelingX, kneelingWidth - 10),
+      this.resources.get(img),
+      this._rotateX(_kneelingX, kneelingWidth),
       this.kneelingY,
       kneelingWidth,
       kneelingHeight

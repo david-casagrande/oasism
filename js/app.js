@@ -87,9 +87,7 @@ import Gila from './actors/gila';
 
     fgCloud.render(ctx);
 
-    // ctx.drawImage(resources.get('images/mdg-bush.png'), startX, startY);
     ctx.drawImage(resources.get('images/rocks-and-gila.png'), startX, startY);
-    // ctx.drawImage(resources.get('images/mdg-tree.png'), startX, startY);
     mdgBush.render(ctx, tickCount);
     mdgLeaves.render(ctx, tickCount);
     mdgTree.render(ctx, tickCount);
@@ -98,13 +96,8 @@ import Gila from './actors/gila';
     observer.render(ctx, tickCount);
 
     fgBush.render(ctx, tickCount);
-    // ctx.drawImage(resources.get('images/fgbush.png'), startX, startY);
     ctx.drawImage(resources.get('images/fg.png'), startX, startY);
     gila.render(ctx, tickCount);
-
-    // ctx.drawImage(resources.get('images/gila-look-right.png'), gilaX, gilaY);
-
-    // ctx.drawImage(resources.get('images/case.png'), startX, startY);
 
     // Walls.forEach(function(rect) {
     //   ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
