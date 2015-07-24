@@ -73,15 +73,52 @@ class AudioPlayer {
   }
 
   render() {
-    const div = document.createElement('div');
-    div.classList.add('modal');
+    //render modal for iframe
+    const modal = document.createElement('div');
+    modal.classList.add('modal');
 
-    div.appendChild(this.iframe);
-    document.body.appendChild(div);
+    modal.appendChild(this.iframe);
+    document.body.appendChild(modal);
 
+    //atached sound cloud wrapper
     this.sc = soundcloudWrapper(this.iframe.id);
-    let controls = soundControl(this.sc);
+
+    //render controls for showing/hiding modal
+    const controls = soundControl(this.sc);
     document.body.appendChild(controls);
+
+    //display current track
+    const currentTrack = document.createElement('div');
+    const currentTrackTitle = document.createElement('div');
+    const currentTrackTime = document.createElement('div');
+    currentTrack.classList.add('current-track');
+    currentTrackTitle.classList.add('title');
+    currentTrackTime.classList.add('time');
+    currentTrack.appendChild(currentTrackTitle);
+    currentTrack.appendChild(currentTrackTime);
+    document.body.appendChild(currentTrack);
+
+    //add event handled to display track changes
+    this.sc.on('play', () => {
+      this.sc.player.getCurrentSound(function(sound) {
+        currentTrackTitle.innerHTML = sound.title;
+      });
+    });
+
+    this.sc.on('playProgress', (e) => {
+      const date = new Date(e.currentPosition);
+      const minutes = date.getUTCMinutes();
+      let seconds = date.getUTCSeconds();
+
+      if(seconds < 10) {
+        seconds = '0' + seconds;
+      }
+
+      const newTime = `  ${minutes}:${seconds}`;
+      //DOMs the bottleneck right?!
+      if(currentTrackTime.innerHTML === newTime) { return; }
+      currentTrackTime.innerHTML = newTime;
+    });
   }
 }
 

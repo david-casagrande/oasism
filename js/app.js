@@ -35,6 +35,11 @@ import BlastAreas from './blast-areas';
   artist.classList.add('artist');
   artist.innerHTML = 'USF';
 
+  const purchaseLink = document.createElement('div');
+  purchaseLink.classList.add('purchase');
+  purchaseLink.innerHTML = '<strong>USF <em>OASISM</em></strong><br /><span>AVAILABLE NOW</span><br /><a href="http://ceremonyrecordings.bandcamp.com/" target="_BLANK">PURCHASE</a>';
+  document.body.appendChild(purchaseLink);
+
   //oasism.appendChild(artist);
 
   canvas.render(oasism);
