@@ -37,7 +37,7 @@ import BlastAreas from './blast-areas';
 
   const purchaseLink = document.createElement('div');
   purchaseLink.classList.add('purchase');
-  purchaseLink.innerHTML = '<strong>USF <em>OASISM</em></strong><br /><span>AVAILABLE NOW</span><br /><a href="http://ceremonyrecordings.bandcamp.com/" target="_BLANK">PURCHASE</a>';
+  purchaseLink.innerHTML = '<strong>USF <em>OASISM</em></strong><br /><span>AVAILABLE NOW</span><br /><a href="https://usftheband.bandcamp.com/album/oasism" target="_BLANK">PURCHASE</a>';
   document.body.appendChild(purchaseLink);
 
   //oasism.appendChild(artist);
