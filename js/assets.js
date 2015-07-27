@@ -92,7 +92,13 @@ const Assets = [
   'images/rock_17.png',
   'images/rock_17_ol.png',
   'images/rock_18.png',
-  'images/rock_18_ol.png'
+  'images/rock_18_ol.png',
+  'images/gas_1.png',
+  'images/gas_2.png',
+  'images/gas_3.png',
+  'images/gas_4.png',
+  'images/gas_5.png',
+  'images/gas_6.png'
 ];
 
 export default Assets;

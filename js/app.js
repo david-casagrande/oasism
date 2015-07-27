@@ -17,6 +17,7 @@ import MDGLeaves from './actors/mdg-leaves';
 import MDGTree from './actors/mdg-tree';
 import Gila from './actors/gila';
 import BlastAreas from './blast-areas';
+import Gas from './actors/gas';
 
 (function() {
   const canvas = new Canvas();
@@ -70,6 +71,7 @@ import BlastAreas from './blast-areas';
   let mdgLeaves = new MDGLeaves({ resources: resources, eventEmitter: emitter });
   let mdgTree = new MDGTree({ resources: resources, eventEmitter: emitter });
   let gila = new Gila({ resources: resources, eventEmitter: emitter });
+  let gas = new Gas({ resources: resources, eventEmitter: emitter });
 
   function init() {
     lastTime = Date.now();
@@ -100,14 +102,19 @@ import BlastAreas from './blast-areas';
 
     fgLeaves.render(ctx, tickCount);
 
-    BlastAreas.forEach((rect) => {
-      const img = rect.blasted ? rect.imgOl : rect.img
-      ctx.drawImage(resources.get(img), startX, startY);
+    BlastAreas.forEach((rect, idx) => {
+      const img = rect.blasted ? rect.imgOl : rect.img;
+      ctx.drawImage(resources.get(img), startX, startY - 30);
 
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
-      ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
+      if(idx === 17 && rect.blasted) {
+        gas.visible = true;
+      }
+
+      // ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+      // ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
     });
 
+    gas.render(ctx, tickCount);
     observer.render(ctx, tickCount);
 
     fgBush.render(ctx, tickCount);

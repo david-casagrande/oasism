@@ -18,7 +18,7 @@ const urls = [
   'images/gila_lookright.png'
 ];
 
-class Observer {
+class Gila {
   constructor(opts = {}) {
     this.resources = opts.resources;
     this.x = opts.x || 0;
@@ -95,4 +95,4 @@ class Observer {
   }
 }
 
-export default Observer;
+export default Gila;
