@@ -98,7 +98,8 @@ const Assets = [
   'images/gas_3.png',
   'images/gas_4.png',
   'images/gas_5.png',
-  'images/gas_6.png'
+  'images/gas_6.png',
+  'images/observer.png'
 ];
 
 export default Assets;

@@ -19,7 +19,8 @@ const urls = [
   'images/observer_gun_aim_left.png',
   'images/observer_gun_aim_right.png',
   'images/observer_gunarm_left.png',
-  'images/observer_gunarm_right.png'
+  'images/observer_gunarm_right.png',
+  'images/observer.png'
 ];
 const defaultX = 325;
 const defaultY = 151;
@@ -76,8 +77,10 @@ class Observer {
       observerArgs = this.standupObserverArgs;
     } else if(this.kneeling) {
       observerArgs = this.kneelingObserverArgs
-    } else {
+    } else if(this.walking) {
       observerArgs = this.walkingObserverArgs;
+    } else {
+      observerArgs = this.stationaryObserverArgs;
     }
 
     ctx.drawImage(...observerArgs);
@@ -371,6 +374,16 @@ class Observer {
   get standupObserverArgs() {
     return [
       this.resources.get(this._standupImage()),
+      this._rotateX(this.kneelingX, kneelingWidth - 10),
+      this.kneelingY,
+      kneelingWidth,
+      kneelingHeight
+    ];
+  }
+
+  get stationaryObserverArgs() {
+    return [
+      this.resources.get(urls[16]),
       this._rotateX(this.kneelingX, kneelingWidth - 10),
       this.kneelingY,
       kneelingWidth,
