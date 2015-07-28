@@ -21,20 +21,16 @@ function soundcloudWrapper(id) {
   return sc;
 }
 
-function soundControl(sc) {
-  const soundControl = document.createElement('div');
-  soundControl.classList.add('sound-control');
-
+function pauseControl(sc) {
   const pause = document.createElement('div');
-  pause.classList.add('icono-pause');
-
-  const toggle = document.createElement('div');
-  toggle.classList.add('icono-volumeHigh');
+  const pauseButton = document.createElement('div');
+  pause.classList.add('play-pause');
+  pauseButton.classList.add('icono-pause');
 
   pause.addEventListener('click', function() {
     sc.player.isPaused(function(paused) {
 
-      let classList = pause.classList;
+      let classList = pauseButton.classList;
 
       if (paused) {
         sc.player.play();
@@ -47,6 +43,19 @@ function soundControl(sc) {
       }
     });
   });
+
+  pause.appendChild(pauseButton);
+  document.body.appendChild(pause);
+
+  return pause;
+}
+
+function soundControl(sc) {
+  const soundControl = document.createElement('div');
+  soundControl.classList.add('sound-control');
+
+  const toggle = document.createElement('div');
+  toggle.classList.add('icono-volumeHigh');
 
   soundControl.addEventListener('click', function() {
     const modal = document.querySelector('.modal');
@@ -61,10 +70,24 @@ function soundControl(sc) {
     }
   });
 
-  // soundControl.appendChild(pause);
   soundControl.appendChild(toggle);
+  document.body.appendChild(soundControl);
 
   return soundControl;
+}
+
+function currentTrack() {
+  const currentTrack = document.createElement('div');
+  const currentTrackTitle = document.createElement('div');
+  const currentTrackTime = document.createElement('div');
+  currentTrack.classList.add('current-track');
+  currentTrackTitle.classList.add('title');
+  currentTrackTime.classList.add('time');
+  currentTrack.appendChild(currentTrackTitle);
+  currentTrack.appendChild(currentTrackTime);
+  document.body.appendChild(currentTrack);
+
+  return { title: currentTrackTitle, time: currentTrackTime };
 }
 
 class AudioPlayer {
@@ -84,24 +107,18 @@ class AudioPlayer {
     this.sc = soundcloudWrapper(this.iframe.id);
 
     //render controls for showing/hiding modal
-    const controls = soundControl(this.sc);
-    document.body.appendChild(controls);
+    soundControl(this.sc);
+
+    //render pause/play control
+    pauseControl(this.sc);
 
     //display current track
-    const currentTrack = document.createElement('div');
-    const currentTrackTitle = document.createElement('div');
-    const currentTrackTime = document.createElement('div');
-    currentTrack.classList.add('current-track');
-    currentTrackTitle.classList.add('title');
-    currentTrackTime.classList.add('time');
-    currentTrack.appendChild(currentTrackTitle);
-    currentTrack.appendChild(currentTrackTime);
-    document.body.appendChild(currentTrack);
+    const track = currentTrack();
 
     //add event handled to display track changes
     this.sc.on('play', () => {
       this.sc.player.getCurrentSound(function(sound) {
-        currentTrackTitle.innerHTML = sound.title;
+        track.title.innerHTML = sound.title;
       });
     });
 
@@ -116,8 +133,8 @@ class AudioPlayer {
 
       const newTime = `  ${minutes}:${seconds}`;
       //DOMs the bottleneck right?!
-      if(currentTrackTime.innerHTML === newTime) { return; }
-      currentTrackTime.innerHTML = newTime;
+      if(track.time.innerHTML === newTime) { return; }
+      track.time.innerHTML = newTime;
     });
   }
 }
