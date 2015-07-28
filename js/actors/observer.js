@@ -40,15 +40,17 @@ class Observer {
     this.newY = 0;
     this.scale = 1;
     this.walking = false;
-    this.kneeling = false;
     this.rotate = false;
     this.walkingCounter = 0;
     this.timer = [];
     this._registerEvents(opts.eventEmitter);
     this.width = width;
     this.height = height;
+    this.kneeling = false;
     this.kneelingCounter = 0;
     this.kneelingLeft = true;
+    this.standup = false;
+    this.standupCounter = 0;
     this._mouseMoveRad = 0;
   }
 
@@ -67,8 +69,17 @@ class Observer {
     ctx.save();
     ctx.scale(this.rotate ? -1 : 1, 1);
 
-    //draw observer walking/kneeling
-    const observerArgs = this.kneeling ? this.kneelingObserverArgs : this.walkingObserverArgs;
+    //draw observer walking/kneeling/standingup
+    // const observerArgs = this.kneeling ? this.kneelingObserverArgs : this.walkingObserverArgs;
+    let observerArgs;
+    if(this.standup) {
+      observerArgs = this.standupObserverArgs;
+    } else if(this.kneeling) {
+      observerArgs = this.kneelingObserverArgs
+    } else {
+      observerArgs = this.walkingObserverArgs;
+    }
+
     ctx.drawImage(...observerArgs);
 
     ctx.restore();
@@ -126,7 +137,13 @@ class Observer {
     if(x > this.x && x < (this.x + width) && y > this.y && y < (this.y + height)) {
       //set kneeling to its inverse and reset the counter
       this.kneelingCounter = 0;
-      this.kneeling = !this.kneeling;
+      if(this.kneeling) {
+        this.standup = true;
+        this.kneeling = false;
+      } else {
+        this.standup = false;
+        this.kneeling = true;
+      }
     } else {
       //shoot the gun
       if(this.kneeling) {
@@ -212,6 +229,28 @@ class Observer {
       } else {
         img = this.kneelingLeft ? urls[12] : urls[13];
       }
+    }
+
+    return img;
+  }
+
+  _standupImage() {
+    this.standupCounter += 1;
+    let img;
+
+    if(this.standupCounter < 15) {
+      img = urls[9];
+    } else if(this.standupCounter >= 15 && this.standupCounter < 30) {
+      img = urls[8];
+    } else if(this.standupCounter >= 30 && this.standupCounter < 45) {
+      img = urls[7];
+    }  else {
+      img = urls[6];
+    }
+
+    if(this.standupCounter >= 60) {
+      this.standup = false;
+      this.standupCounter = 0;
     }
 
     return img;
@@ -322,6 +361,16 @@ class Observer {
   get kneelingObserverArgs() {
     return [
       this.resources.get(this._kneelingImage()),
+      this._rotateX(this.kneelingX, kneelingWidth - 10),
+      this.kneelingY,
+      kneelingWidth,
+      kneelingHeight
+    ];
+  }
+
+  get standupObserverArgs() {
+    return [
+      this.resources.get(this._standupImage()),
       this._rotateX(this.kneelingX, kneelingWidth - 10),
       this.kneelingY,
       kneelingWidth,
