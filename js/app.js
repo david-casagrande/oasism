@@ -18,6 +18,8 @@ import MDGTree from './actors/mdg-tree';
 import Gila from './actors/gila';
 import BlastAreas from './blast-areas';
 import Gas from './actors/gas';
+import Node from './actors/node';
+import GunArm from './actors/gun-arm';
 
 (function() {
   const canvas = new Canvas();
@@ -61,7 +63,9 @@ import Gas from './actors/gas';
   let gilaX = startX;
   let gilaY = startY;
 
-  let observer = new Observer({ resources: resources, eventEmitter: emitter });
+  let node = new Node({ resources: resources, eventEmitter: emitter });
+  let gunArm = new GunArm({ resources: resources, eventEmitter: emitter });
+  let observer = new Observer({ resources: resources, eventEmitter: emitter, node: node, gunArm: gunArm });
   let fgCloud = new Cloud({ resources: resources, image: 'images/clouds-fg.png', step: 0.2 });
   let mdgCloud = new Cloud({ resources: resources, image: 'images/clouds-mdg.png', step: 0.4, y: -1 });
   let bgCloud = new Cloud({ resources: resources, image: 'images/clouds-bg.png', step: 0.6 });
@@ -116,11 +120,13 @@ import Gas from './actors/gas';
 
     gas.render(ctx, tickCount);
     observer.render(ctx, tickCount);
+    // gunArm.render(ctx, tickCount);
 
     fgBush.render(ctx, tickCount);
     ctx.drawImage(resources.get('images/fg.png'), startX - 1, startY - 1);
     gila.render(ctx, tickCount);
 
+    node.render(ctx, tickCount);
     // Walls.forEach(function(rect) {
     //   ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
     //   ctx.fillRect(rect.x, rect.y, rect.width, rect.height);

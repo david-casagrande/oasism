@@ -53,15 +53,24 @@ class Observer {
     this.standup = false;
     this.standupCounter = 0;
     this._mouseMoveRad = 0;
+    this.node = opts.node;
   }
 
   render(ctx, tickCount) {
     this._updatePosition();
 
+    //if observer is kneeling and not in the process of kneeling then draw the gun
+    const drawGun = this.kneeling && this.kneelingCounter > 90;
+
+    //draw arm behind observer if kneeling right
+    if(drawGun && !this.kneelingLeft) {
+      this._drawGunArm(ctx);
+    }
+
     this._drawObserver(ctx);
 
-    //if observer is kneeling and not in the process of kneeling then draw the gun
-    if(this.kneeling && this.kneelingCounter > 90) {
+    //draw arm in front of observer if kneeling left
+    if(drawGun && this.kneelingLeft) {
       this._drawGunArm(ctx);
     }
   }
@@ -150,11 +159,12 @@ class Observer {
     } else {
       //shoot the gun
       if(this.kneeling) {
-        BlastAreas.forEach((area) => {
-          if(x > area.x && x < area.x + area.width && y > area.y && y < area.y + area.height) {
-            area.blasted = true;
-          }
-        });
+        this.node.shoot(x, y, this.x, this.y);
+        // BlastAreas.forEach((area) => {
+        //   if(x > area.x && x < area.x + area.width && y > area.y && y < area.y + area.height) {
+        //     area.blasted = true;
+        //   }
+        // });
       } else {
         //get observer walking
         this.walking = true;
@@ -173,10 +183,10 @@ class Observer {
     let deltaY;
     if(this.kneelingLeft) {
       deltaX = this.x - x;
-      deltaY = this.y - y;
+      deltaY = this.y - y + 35;
     } else {
       deltaX = (x - this.x);
-      deltaY = -(this.y - y);
+      deltaY = -(this.y - y + 55);
     }
     this.mouseMoveRad = Math.atan2(deltaY, deltaX);
   }
@@ -404,7 +414,7 @@ class Observer {
     if(this.rotate) {
       _kneelingX = this.kneelingLeft ? this.kneelingX - 14 : this.kneelingX - 6;
     } else {
-      _kneelingX = this.kneelingLeft ? this.kneelingX : this.kneelingX + 6;
+      _kneelingX = this.kneelingLeft ? this.kneelingX : this.kneelingX;// + 6;
     }
 
     return [
@@ -422,8 +432,8 @@ class Observer {
 
   get mouseMoveRad() {
     const radian = this._mouseMoveRad;
-    const lowerLimit = this.kneelingLeft ? -0.25 : -0.6;
-    const upperLimit = this.kneelingLeft ? 0.8 : 0.5;
+    const lowerLimit = this.kneelingLeft ? -0.15 : -0.35;
+    const upperLimit = this.kneelingLeft ? 0.5 : 0.175;
     if(radian < lowerLimit) {
       return lowerLimit;
     } else if(radian > upperLimit) {
