@@ -20,7 +20,11 @@ const urls = [
   'images/observer_gun_aim_right.png',
   'images/observer_gunarm_left_1.png',
   'images/observer_gunarm_right_1.png',
-  'images/observer.png'
+  'images/observer.png',
+  'images/observer_gunarm_left_2.png',
+  'images/observer_gunarm_left_3.png',
+  'images/observer_gunarm_right_2.png',
+  'images/observer_gunarm_right_3.png'
 ];
 const defaultX = 325;
 const defaultY = 151;
@@ -54,6 +58,8 @@ class Observer {
     this.standupCounter = 0;
     this._mouseMoveRad = 0;
     this.node = opts.node;
+    this.shooting = false;
+    this.shootingCounter = 0;
   }
 
   render(ctx, tickCount) {
@@ -162,6 +168,7 @@ class Observer {
       //shoot the gun
       if(this.kneeling) {
         this.node.shoot(x, y, this.x, this.y, this.mouseMoveRad, this.kneelingLeft);
+        this.shooting = true;
         // BlastAreas.forEach((area) => {
         //   if(x > area.x && x < area.x + area.width && y > area.y && y < area.y + area.height) {
         //     area.blasted = true;
@@ -266,6 +273,35 @@ class Observer {
     if(this.standupCounter >= 60) {
       this.standup = false;
       this.standupCounter = 0;
+    }
+
+    return img;
+  }
+
+  _shootImage() {
+    // the observer is not firing the gun
+    if(!this.shooting) {
+      return this.kneelingLeft ? urls[14] : urls[15];
+    }
+
+    //fire the gun
+    let img;
+
+    this.shootingCounter += 0.25;
+    const pace = this.shootingCounter;
+
+    if(pace >= 0 && pace < 10) {
+      img = this.kneelingLeft ? urls[14] : urls[15];
+    } else if(pace >= 10 && pace < 20) {
+      img = this.kneelingLeft ? urls[17] : urls[19];
+    } else {
+      img = this.kneelingLeft ? urls[18] : urls[20];
+    }
+
+    //reset shooting
+    if(this.shootingCounter >= 30) {
+      this.shooting = false;
+      this.shootingCounter = 0;
     }
 
     return img;
@@ -404,7 +440,7 @@ class Observer {
   }
 
   get gunArmArgs() {
-    let img = this.kneelingLeft ? urls[14] : urls[15];
+    let img = this._shootImage();
 
     let _kneelingX;
     if(this.rotate) {
