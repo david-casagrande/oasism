@@ -18,8 +18,8 @@ const urls = [
   'images/observer_pack_rummage_2.png',
   'images/observer_gun_aim_left.png',
   'images/observer_gun_aim_right.png',
-  'images/observer_gunarm_left.png',
-  'images/observer_gunarm_right.png',
+  'images/observer_gunarm_left_1.png',
+  'images/observer_gunarm_right_1.png',
   'images/observer.png'
 ];
 const defaultX = 325;
@@ -61,18 +61,20 @@ class Observer {
 
     //if observer is kneeling and not in the process of kneeling then draw the gun
     const drawGun = this.kneeling && this.kneelingCounter > 90;
-
-    //draw arm behind observer if kneeling right
-    if(drawGun && !this.kneelingLeft) {
-      this._drawGunArm(ctx);
+    const toRender = ['_drawObserver'];
+    if(drawGun) {
+      if(this.rotate) {
+        //draw gun behind observer if user is kneeling left, othewise put it in front
+        const method = this.kneelingLeft ? 'unshift' : 'push';
+        toRender[method]('_drawGunArm');
+      } else {
+        //draw gun in front of observer if user is kneeling left, othewise put it behind
+        const method = this.kneelingLeft ? 'push' : 'unshift';
+        toRender[method]('_drawGunArm');
+      }
     }
 
-    this._drawObserver(ctx);
-
-    //draw arm in front of observer if kneeling left
-    if(drawGun && this.kneelingLeft) {
-      this._drawGunArm(ctx);
-    }
+    toRender.forEach((f) => this[f](ctx));
   }
 
   _drawObserver(ctx) {
@@ -159,7 +161,7 @@ class Observer {
     } else {
       //shoot the gun
       if(this.kneeling) {
-        this.node.shoot(x, y, this.x, this.y);
+        this.node.shoot(x, y, this.x, this.y, this.mouseMoveRad, this.kneelingLeft);
         // BlastAreas.forEach((area) => {
         //   if(x > area.x && x < area.x + area.width && y > area.y && y < area.y + area.height) {
         //     area.blasted = true;
@@ -402,17 +404,11 @@ class Observer {
   }
 
   get gunArmArgs() {
-    let img;
-    if(this.rotate) {
-      // img = this.kneelingLeft ? urls[15] : urls[14];
-      img = this.kneelingLeft ? urls[14] : urls[15];
-    } else {
-      img = this.kneelingLeft ? urls[14] : urls[15];
-    }
+    let img = this.kneelingLeft ? urls[14] : urls[15];
 
     let _kneelingX;
     if(this.rotate) {
-      _kneelingX = this.kneelingLeft ? this.kneelingX - 14 : this.kneelingX - 6;
+      _kneelingX = this.kneelingLeft ? this.kneelingX - 10 : this.kneelingX - 12;
     } else {
       _kneelingX = this.kneelingLeft ? this.kneelingX : this.kneelingX;// + 6;
     }

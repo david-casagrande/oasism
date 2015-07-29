@@ -106,7 +106,13 @@ const Assets = [
   'images/node_lightning_1.png',
   'images/node_lightning_2.png',
   'images/node_lightning_3.png',
-  'images/node_shooting.png'
+  'images/node_shooting.png',
+  'images/observer_gunarm_left_1.png',
+  'images/observer_gunarm_left_2.png',
+  'images/observer_gunarm_left_3.png',
+  'images/observer_gunarm_right_1.png',
+  'images/observer_gunarm_right_2.png',
+  'images/observer_gunarm_right_3.png'
 ];
 
 export default Assets;
