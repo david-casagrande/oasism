@@ -5,6 +5,10 @@ const urls = [
   'images/node_lightning_1.png',
   'images/node_lightning_2.png',
   'images/node_lightning_3.png',
+  'images/node_light_1.png',
+  'images/node_light_2.png',
+  'images/node_light_3.png',
+  'images/node_light_4.png'
 ];
 
 
@@ -22,39 +26,43 @@ class Node {
     this.width = 25;
     this.height = 23;
     this.kneelingLeft = false;
+    this.showNodeLight = false;
+    this.nodeLightCount = 0;
+    this.lightX = 0;
+    this.lightY = 0;
   }
 
   shoot(x, y, originX, originY, radian, kneelingLeft) {
     if(this.shooting) { return; }
-    const _cos = Math.cos(radian);
-    const _o = radian > 0 ? originX : originX;
-    const _y = radian > 0 ? originY : originY;
-    const xVelocity = _o * _cos;
-    const yVelocity = _y * _cos;
-
+    this.showNodeLight = false;
     this.newX = x;
     this.newY = y;
-    this.x = xVelocity;//originX;
-    this.y = yVelocity;//originY;
+    this.x = originX;
+    this.y = originY;
     this.radian = radian;
     this.kneelingLeft = kneelingLeft;
     this.shooting = true;
     this.lightning = true;
 
-console.log(xVelocity, originX);
-console.log(yVelocity, originY);
-
     // this._updatePosition(x, y);
-    // BlastAreas.forEach((area) => {
-    //   if(x > area.x && x < area.x + area.width && y > area.y && y < area.y + area.height) {
-    //     area.blasted = true;
-    //   }
-    // });
+    BlastAreas.forEach((area) => {
+      if(x > area.x && x < area.x + area.width && y > area.y && y < area.y + area.height) {
+        area.blasted = true;
+      }
+    });
+  }
+
+  showLight(x, y) {
+    this.showNodeLight = true;
+    this.lightX = x;
+    this.lightY = y;
+  }
+
+  hideLight() {
+    this.showNodeLight = false;
   }
 
   render(ctx, tickCount) {
-    if(!this.shooting) { return; }
-
     // this._updatePosition();
     // const radian = this.radian;
     // const speed = 3.0; // pixels per tick
@@ -74,7 +82,13 @@ console.log(yVelocity, originY);
     //   this.height
     // ]);
     // ctx.restore();
-    ctx.drawImage(...this.nodeLightningArgs);
+    if(this.shooting) {
+      ctx.drawImage(...this.nodeLightningArgs);
+    }
+
+    if(this.showNodeLight) {
+      ctx.drawImage(...this.nodeLightArgs);
+    }
 
     // ctx.drawImage(...this.nodeArgs);
   }
@@ -96,6 +110,16 @@ console.log(yVelocity, originY);
       this.newY - (this.height/2),
       this.width,
       this.height
+    ];
+  }
+
+  get nodeLightArgs() {
+    return [
+      this.resources.get(this._nodeLightImage()),
+      this.lightX - (this.width * 1.2),
+      this.lightY - (this.height * 1.5),
+      this.width * 2.5,
+      this.height * 2.5
     ];
   }
 
@@ -124,6 +148,29 @@ console.log(yVelocity, originY);
     }
 
     return img;
+  }
+
+  _nodeLightImage() {
+    let img;
+
+    let pace = this.nodeLightCount += 0.5;
+
+    if(pace >= 0 && pace < 10) {
+      img = urls[4];
+    } else if(pace >= 10 && pace < 20) {
+      img = urls[5];
+    } else if(pace >= 20 && pace < 30) {
+      img = urls[6];
+    } else {
+      img = urls[7];
+    }
+
+    if(this.nodeLightCount >= 40) {
+      this.nodeLightCount = 0;
+    }
+
+    return img;
+
   }
 
   _updatePosition(x, y) {

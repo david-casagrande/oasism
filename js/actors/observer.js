@@ -167,14 +167,8 @@ class Observer {
     } else {
       //shoot the gun
       if(this.kneeling) {
-        console.log('ssssup')
         this.node.shoot(x, y, this.x, this.y, this.mouseMoveRad, this.kneelingLeft);
         this.shooting = true;
-        // BlastAreas.forEach((area) => {
-        //   if(x > area.x && x < area.x + area.width && y > area.y && y < area.y + area.height) {
-        //     area.blasted = true;
-        //   }
-        // });
       } else {
         //get observer walking
         this.walking = true;
@@ -199,6 +193,19 @@ class Observer {
       deltaY = -(this.y - y + 55);
     }
     this.mouseMoveRad = Math.atan2(deltaY, deltaX);
+
+    //display the node light
+    if(this.kneeling && this.kneelingCounter >= 90) {
+      const map = BlastAreas.map((area) => {
+        return (!area.blasted && x > area.x && x < area.x + area.width && y > area.y && y < area.y + area.height);
+      });
+
+      if(map.indexOf(true) > -1) {
+        this.node.showLight(x, y);
+      } else {
+        this.node.hideLight();
+      }
+    }
   }
 
   _walkingImage() {

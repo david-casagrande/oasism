@@ -103,6 +103,7 @@ const Assets = [
   'images/node_light_1.png',
   'images/node_light_2.png',
   'images/node_light_3.png',
+  'images/node_light_4.png',
   'images/node_lightning_1.png',
   'images/node_lightning_2.png',
   'images/node_lightning_3.png',
