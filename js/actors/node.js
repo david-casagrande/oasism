@@ -1,8 +1,12 @@
 import BlastAreas from '../blast-areas';
 
 const urls = [
-  'images/node_shooting.png'
+  'images/node_shooting.png',
+  'images/node_lightning_1.png',
+  'images/node_lightning_2.png',
+  'images/node_lightning_3.png',
 ];
+
 
 class Node {
   constructor(opts = {}) {
@@ -13,6 +17,8 @@ class Node {
     this.newY = 0;
     this.shooting = false;
     this.lightning = false;
+    this.lightningCount = 0;
+    this.lightningCycle = 0;
     this.width = 25;
     this.height = 23;
     this.kneelingLeft = false;
@@ -21,8 +27,8 @@ class Node {
   shoot(x, y, originX, originY, radian, kneelingLeft) {
     if(this.shooting) { return; }
     const _cos = Math.cos(radian);
-    const _o = radian > 0 ? originX - 25 : originX;
-    const _y = radian > 0 ? originY - 25 : originY;
+    const _o = radian > 0 ? originX : originX;
+    const _y = radian > 0 ? originY : originY;
     const xVelocity = _o * _cos;
     const yVelocity = _y * _cos;
 
@@ -33,6 +39,7 @@ class Node {
     this.radian = radian;
     this.kneelingLeft = kneelingLeft;
     this.shooting = true;
+    this.lightning = true;
 
 console.log(xVelocity, originX);
 console.log(yVelocity, originY);
@@ -48,8 +55,8 @@ console.log(yVelocity, originY);
   render(ctx, tickCount) {
     if(!this.shooting) { return; }
 
-    this._updatePosition();
-    const radian = this.radian;
+    // this._updatePosition();
+    // const radian = this.radian;
     // const speed = 3.0; // pixels per tick
     // const xVelocity = speed * Math.cos(radian);
     // const yVelocity = speed * Math.sin(radian);
@@ -67,8 +74,9 @@ console.log(yVelocity, originY);
     //   this.height
     // ]);
     // ctx.restore();
+    ctx.drawImage(...this.nodeLightningArgs);
 
-    ctx.drawImage(...this.nodeArgs);
+    // ctx.drawImage(...this.nodeArgs);
   }
 
   get nodeArgs() {
@@ -76,9 +84,46 @@ console.log(yVelocity, originY);
       this.resources.get(urls[0]),
       this.x,
       this.y,
-      25,
-      23
+      this.width,
+      this.height
     ];
+  }
+
+  get nodeLightningArgs() {
+    return [
+      this.resources.get(this._nodeLightningImage()),
+      this.newX - (this.width/2),
+      this.newY - (this.height/2),
+      this.width,
+      this.height
+    ];
+  }
+
+  _nodeLightningImage() {
+    let img;
+
+    let pace = this.lightningCount += 0.85;
+
+    if(pace >= 0 && pace < 10) {
+      img = urls[1];
+    } else if(pace >= 10 && pace < 20) {
+      img = urls[2];
+    } else {
+      img = urls[3];
+    }
+
+    if(this.lightningCount >= 30) {
+      this.lightningCycle += 1;
+      this.lightningCount = 0;
+
+      if(this.lightningCycle >= 4) {
+        this.lightningCount = 0;
+        this.lightningCycle = 0;
+        this.shooting = false;
+      }
+    }
+
+    return img;
   }
 
   _updatePosition(x, y) {

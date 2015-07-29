@@ -167,6 +167,7 @@ class Observer {
     } else {
       //shoot the gun
       if(this.kneeling) {
+        console.log('ssssup')
         this.node.shoot(x, y, this.x, this.y, this.mouseMoveRad, this.kneelingLeft);
         this.shooting = true;
         // BlastAreas.forEach((area) => {
