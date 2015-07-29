@@ -460,7 +460,7 @@ class Observer {
     return [
       this.resources.get(img),
       this._rotateX(_kneelingX, kneelingWidth),
-      this.kneelingY,
+      this.rotate ? this.kneelingY - 1 : this.kneelingY,
       kneelingWidth,
       kneelingHeight
     ];
