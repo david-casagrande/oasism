@@ -108,13 +108,15 @@ class Observer {
     ctx.save();
     if(this.rotate) {
       if(this.kneelingLeft) {
-        ctx.translate(this._rotateX(this.gunArmArgs[1], kneelingWidth + 9), this.gunArmArgs[2] - 2);
+        ctx.translate(this._rotateX(this.gunArmArgs[1], kneelingWidth + 5), this.gunArmArgs[2] - 3);
       } else {
-        ctx.translate(this._rotateX(this.gunArmArgs[1], kneelingWidth + 8), this.gunArmArgs[2] + 4);
+        ctx.translate(this._rotateX(this.gunArmArgs[1], kneelingWidth + 6), this.gunArmArgs[2] + 5);
       }
+      // ctx.translate(this._rotateX(this.gunArmArgs[1], kneelingWidth), this.gunArmArgs[2]);
     } else {
       ctx.translate(this.gunArmArgs[1], this.gunArmArgs[2]);
     }
+    //   ctx.translate(this.gunArmArgs[1], this.gunArmArgs[2]);
 
     ctx.translate(this.gunArmArgs[3]/2, this.gunArmArgs[4]/2);
 
@@ -456,10 +458,17 @@ class Observer {
       _kneelingX = this.kneelingLeft ? this.kneelingX : this.kneelingX;// + 6;
     }
 
+    let additionalX = this.kneelingLeft ? (this.mouseMoveRad * 5) : -(this.mouseMoveRad * 1.5);
+
+    if(this.rotate) {
+      additionalX = this.kneelingLeft ?  -(this.mouseMoveRad * 1.5) : (this.mouseMoveRad * 1.5);
+    }
+    const additionalY = 0;
+
     return [
       this.resources.get(img),
-      this._rotateX(_kneelingX, kneelingWidth),
-      this.rotate ? this.kneelingY - 1 : this.kneelingY,
+      this._rotateX(_kneelingX, kneelingWidth) + additionalX,
+      (this.rotate ? this.kneelingY - 1 : this.kneelingY) + additionalY,
       kneelingWidth,
       kneelingHeight
     ];
@@ -471,8 +480,8 @@ class Observer {
 
   get mouseMoveRad() {
     const radian = this._mouseMoveRad;
-    const lowerLimit = this.kneelingLeft ? -0.15 : -0.35;
-    const upperLimit = this.kneelingLeft ? 0.5 : 0.175;
+    const lowerLimit = this.kneelingLeft ? -0.15 : -1.45;
+    const upperLimit = this.kneelingLeft ? 1.45 : 0.175;
     if(radian < lowerLimit) {
       return lowerLimit;
     } else if(radian > upperLimit) {
