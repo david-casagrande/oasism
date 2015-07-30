@@ -89,9 +89,7 @@ class FGBush {
       newModulus = possibleModuli[0];
     }
 
-
     this.modulus = newModulus;
-    console.log(this.modulus);
   }
 
   _registerEvents(eventEmitter) {
