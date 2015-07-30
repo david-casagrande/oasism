@@ -11,7 +11,6 @@ const urls = [
   'images/node_light_4.png'
 ];
 
-
 class Node {
   constructor(opts = {}) {
     this.resources = opts.resources;
@@ -45,11 +44,6 @@ class Node {
     this.lightning = true;
 
     // this._updatePosition(x, y);
-    BlastAreas.forEach((area) => {
-      if(x > area.x && x < area.x + area.width && y > area.y && y < area.y + area.height) {
-        area.blasted = true;
-      }
-    });
   }
 
   showLight(x, y) {
@@ -144,6 +138,17 @@ class Node {
         this.lightningCount = 0;
         this.lightningCycle = 0;
         this.shooting = false;
+
+        //send the blast notification
+        BlastAreas.forEach((area) => {
+          const x = this.newX;
+          const y = this.newY;
+          if(x > area.x && x < area.x + area.width && y > area.y && y < area.y + area.height) {
+            console.log(area);
+            area.falling = true;
+            area.blasted = true;
+          }
+        });
       }
     }
 

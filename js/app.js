@@ -20,6 +20,7 @@ import BlastAreas from './blast-areas';
 import Gas from './actors/gas';
 import Node from './actors/node';
 import GunArm from './actors/gun-arm';
+import BlastAreaManager from './blast-area-manager';
 
 (function() {
   const canvas = new Canvas();
@@ -76,6 +77,7 @@ import GunArm from './actors/gun-arm';
   let mdgTree = new MDGTree({ resources: resources, eventEmitter: emitter });
   let gila = new Gila({ resources: resources, eventEmitter: emitter });
   let gas = new Gas({ resources: resources, eventEmitter: emitter });
+  let blastAreaManager = new BlastAreaManager({ resources: resources, eventEmitter: emitter, gas: gas });
 
   function init() {
     lastTime = Date.now();
@@ -106,17 +108,7 @@ import GunArm from './actors/gun-arm';
 
     fgLeaves.render(ctx, tickCount);
 
-    BlastAreas.forEach((rect, idx) => {
-      const img = rect.blasted ? rect.imgOl : rect.img;
-      ctx.drawImage(resources.get(img), startX, startY - 30);
-
-      if(idx === 17 && rect.blasted) {
-        gas.visible = true;
-      }
-
-      // ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
-      // ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
-    });
+    blastAreaManager.render(ctx, tickCount);
 
     gas.render(ctx, tickCount);
     observer.render(ctx, tickCount);
