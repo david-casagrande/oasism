@@ -120,7 +120,7 @@ class Node {
   _nodeLightningImage() {
     let img;
 
-    let pace = this.lightningCount += 0.85;
+    let pace = this.lightningCount += 1.25;
 
     if(pace >= 0 && pace < 10) {
       img = urls[1];
@@ -134,7 +134,7 @@ class Node {
       this.lightningCycle += 1;
       this.lightningCount = 0;
 
-      if(this.lightningCycle >= 4) {
+      if(this.lightningCycle >= 1) {
         this.lightningCount = 0;
         this.lightningCycle = 0;
         this.shooting = false;
