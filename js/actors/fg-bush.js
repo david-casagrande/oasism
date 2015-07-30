@@ -1,3 +1,14 @@
+import randomNumber from '../utils/random-number';
+
+const possibleModuli = [
+  100,
+  200,
+  300,
+  400,
+  600,
+  800
+];
+
 class FGBush {
   constructor(opts = {}) {
     this.x = opts.x || 0;
@@ -5,13 +16,19 @@ class FGBush {
     this.resources = opts.resources;
     this.counter = 0;
     this.totalCounter = 0;
+    this.modulus = 10;
     this.eventEmitter = opts.eventEmitter;
     this.active = false;
     this._registerEvents(opts.eventEmitter);
-
+    this.totalTimer = 0;
   }
 
   update(ctx, tickCount) {
+    this.totalTimer += 1;
+    if(this.totalTimer % this.modulus === 0) {
+      this.active = true;
+    }
+
     if(!this.active) {
       return [
         this.resources.get('images/fgbush.png'),
@@ -48,6 +65,7 @@ class FGBush {
       this.counter = 0;
       this.totalCounter = 0;
       this.active = false;
+      this._setNewModulus();
     }
 
     return [
@@ -64,10 +82,22 @@ class FGBush {
     }
   }
 
+  _setNewModulus() {
+    let newModulus = possibleModuli[randomNumber(0, possibleModuli.length)];
+
+    if(typeof newModulus === 'undefined') {
+      newModulus = possibleModuli[0];
+    }
+
+
+    this.modulus = newModulus;
+    console.log(this.modulus);
+  }
+
   _registerEvents(eventEmitter) {
-    eventEmitter.on('click', () => {
-      this.active = true;
-    });
+    // eventEmitter.on('click', () => {
+    //   this.active = true;
+    // });
   }
 }
 
