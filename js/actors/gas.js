@@ -4,7 +4,12 @@ const urls = [
   'images/gas_3.png',
   'images/gas_4.png',
   'images/gas_5.png',
-  'images/gas_6.png'
+  'images/gas_6.png',
+  'images/gas_2_1.png',
+  'images/gas_2_2.png',
+  'images/gas_2_3.png',
+  'images/gas_2_4.png',
+  'images/gas_2_5.png'
 ];
 
 class Gas {
@@ -16,10 +21,34 @@ class Gas {
     this.visible = false;
   }
 
-  update(ctx, tickCount) {
+  render(ctx, tickCount) {
+    if(!this.visible) { return; }
+    this.counter += 1;
+
+    this._drawGas1(ctx);
+    this._drawGas2(ctx);
+
+    if(this.counter > 120) {
+      this.counter = 0;
+    }
+  }
+
+  _drawGas1(ctx) {
+    const gasArgs = this.gas1Args;
+    if(gasArgs[0] === null) { return; }
+    ctx.drawImage(...gasArgs);
+  }
+
+  _drawGas2(ctx) {
+    const gasArgs = this.gas2Args;
+    if(gasArgs[0] === null) { return; }
+    ctx.drawImage(...gasArgs);
+  }
+
+  _gas1Image() {
     var img = null;
 
-    var pace = this.counter += 0.75;
+    var pace = this.counter;
 
     if(pace > 0 && pace < 10) {
       img = null;
@@ -37,23 +66,45 @@ class Gas {
       img = this.resources.get(urls[5]);
     }
 
-    if(this.counter > 70) {
-      this.counter = 0;
-    }
+    return img;
+  }
 
+  get gas1Args() {
     return [
-      img,
+      this._gas1Image(),
       this.x,
       this.y
     ];
   }
 
-  render(ctx, tickCount) {
-    if(!this.visible) { return; }
-    var updated = this.update(ctx, tickCount);
+  _gas2Image() {
+    var img = null;
 
-    if(updated[0] === null) { return; }
-    ctx.drawImage(...updated);
+    var pace = this.counter;
+
+    if(pace > 0 && pace < 60) {
+      img = null;
+    } else if(pace >= 60 && pace < 70) {
+      img = this.resources.get(urls[6]);
+    } else if(pace >= 70 && pace < 80) {
+      img = this.resources.get(urls[7]);
+    } else if(pace >= 80 && pace < 90) {
+      img = this.resources.get(urls[8]);
+    } else if(pace >= 90 && pace < 100) {
+      img = this.resources.get(urls[9]);
+    } else if(pace >= 110 && pace < 120) {
+      img = this.resources.get(urls[10]);
+    }
+
+    return img;
+  }
+
+  get gas2Args() {
+    return [
+      this._gas2Image(),
+      this.x,
+      this.y + 1
+    ];
   }
 }
 

@@ -99,6 +99,11 @@ const Assets = [
   'images/gas_4.png',
   'images/gas_5.png',
   'images/gas_6.png',
+  'images/gas_2_1.png',
+  'images/gas_2_2.png',
+  'images/gas_2_3.png',
+  'images/gas_2_4.png',
+  'images/gas_2_5.png',
   'images/observer.png',
   'images/node_light_1.png',
   'images/node_light_2.png',
@@ -113,7 +118,7 @@ const Assets = [
   'images/observer_gunarm_left_3.png',
   'images/observer_gunarm_right_1.png',
   'images/observer_gunarm_right_2.png',
-  'images/observer_gunarm_right_3.png'
+  'images/observer_gunarm_right_3.png',
 ];
 
 export default Assets;
