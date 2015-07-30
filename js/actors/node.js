@@ -100,8 +100,8 @@ class Node {
   get nodeLightningArgs() {
     return [
       this.resources.get(this._nodeLightningImage()),
-      this.newX - (this.width/2),
-      this.newY - (this.height/2),
+      Math.round(this.newX - (this.width/2)),
+      Math.round(this.newY - (this.height/2)),
       this.width,
       this.height
     ];

@@ -44,15 +44,16 @@ class BlastAreaManager {
   }
 
   _drawRock(rock, ctx) {
-    // if(rock.blasted || rock.falling) { return; }
-    if(rock.falling) {
-      rock.fallingY += 5;
-
-      if(rock.fallingY >= rock.fallingYStop) {
-        rock.falling = false;
-      }
-    }
-
+    // if(rock.falling) {
+    //   rock.fallingY += 5;
+    //
+    //   if(rock.fallingY >= rock.fallingYStop) {
+    //     rock.falling = false;
+    //   }
+    // }
+    //
+    // ctx.drawImage(this.resources.get(rock.img), startX, rock.fallingY);
+    if(rock.blasted || rock.falling) { return; }
     ctx.drawImage(this.resources.get(rock.img), startX, rock.fallingY);
   }
 
