@@ -99,7 +99,6 @@ class Observer {
     } else {
       observerArgs = this.stationaryObserverArgs;
     }
-
     ctx.drawImage(...observerArgs);
 
     ctx.restore();
@@ -420,8 +419,8 @@ class Observer {
   get kneelingObserverArgs() {
     return [
       this.resources.get(this._kneelingImage()),
-      this._rotateX(this.kneelingX, kneelingWidth - 10),
-      this.kneelingY,
+      Math.floor(this._rotateX(this.kneelingX, kneelingWidth - 10)),
+      Math.floor(this.kneelingY),
       kneelingWidth,
       kneelingHeight
     ];
@@ -430,8 +429,8 @@ class Observer {
   get standupObserverArgs() {
     return [
       this.resources.get(this._standupImage()),
-      this._rotateX(this.kneelingX, kneelingWidth - 10),
-      this.kneelingY,
+      Math.floor(this._rotateX(this.kneelingX, kneelingWidth - 10)),
+      Math.floor(this.kneelingY),
       kneelingWidth,
       kneelingHeight
     ];
@@ -440,8 +439,8 @@ class Observer {
   get stationaryObserverArgs() {
     return [
       this.resources.get(urls[16]),
-      this._rotateX(this.kneelingX, kneelingWidth - 10),
-      this.kneelingY,
+      Math.floor(this._rotateX(this.kneelingX, kneelingWidth - 10)),
+      Math.floor(this.kneelingY),
       kneelingWidth,
       kneelingHeight
     ];
