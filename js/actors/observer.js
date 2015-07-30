@@ -419,8 +419,8 @@ class Observer {
   get kneelingObserverArgs() {
     return [
       this.resources.get(this._kneelingImage()),
-      Math.floor(this._rotateX(this.kneelingX, kneelingWidth - 10)),
-      Math.floor(this.kneelingY),
+      Math.round(this._rotateX(this.kneelingX, kneelingWidth - 10)),
+      Math.round(this.kneelingY),
       kneelingWidth,
       kneelingHeight
     ];
@@ -429,8 +429,8 @@ class Observer {
   get standupObserverArgs() {
     return [
       this.resources.get(this._standupImage()),
-      Math.floor(this._rotateX(this.kneelingX, kneelingWidth - 10)),
-      Math.floor(this.kneelingY),
+      Math.round(this._rotateX(this.kneelingX, kneelingWidth - 10)),
+      Math.round(this.kneelingY),
       kneelingWidth,
       kneelingHeight
     ];
@@ -439,8 +439,8 @@ class Observer {
   get stationaryObserverArgs() {
     return [
       this.resources.get(urls[16]),
-      Math.floor(this._rotateX(this.kneelingX, kneelingWidth - 10)),
-      Math.floor(this.kneelingY),
+      Math.round(this._rotateX(this.kneelingX, kneelingWidth - 10)),
+      Math.round(this.kneelingY),
       kneelingWidth,
       kneelingHeight
     ];
