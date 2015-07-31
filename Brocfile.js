@@ -12,9 +12,14 @@ var uglifyJavaScript = require('broccoli-uglify-js');
 
 var js = 'js';
 js = esTranspiler(js);
-js = browserify(js, { bundleExtension: '.js' });
+js = browserify(js, {
+  bundleExtension: '.js',
+  browserify: {
+    debug: process.env.BROCCOLI_ENV === 'production' ? false : true
+  }
+});
 
-if(process.env.BROCCOLI_ENV) {
+if(process.env.BROCCOLI_ENV  === 'production') {
   js = uglifyJavaScript(js, { compress: true, mangle: true });
 };
 
