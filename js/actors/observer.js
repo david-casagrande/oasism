@@ -26,6 +26,46 @@ const urls = [
   'images/observer_gunarm_right_2.png',
   'images/observer_gunarm_right_3.png'
 ];
+
+const smokingURLS = [
+  'images/observer_smoking_1.png',
+  'images/observer_smoking_2.png',
+  'images/observer_smoking_3.png',
+  'images/observer_smoking_4.png',
+  'images/observer_smoking_5.png',
+  'images/observer_smoking_6.png',
+  'images/observer_smoking_7.png',
+  'images/observer_smoking_8.png',
+  'images/observer_smoking_9.png',
+  'images/observer_smoking_10.png',
+  'images/observer_smoking_11.png',
+  'images/observer_smoking_12.png',
+  'images/observer_smoking_13.png',
+  'images/observer_smoking_14.png',
+  'images/observer_smoking_15.png',
+  'images/observer_smoking_16.png',
+  'images/observer_smoking_17.png',
+  'images/observer_smoking_18.png',
+  'images/observer_smoking_19.png',
+  'images/observer_smoking_20.png',
+  'images/observer_smoking_21.png',
+  'images/observer_smoking_22_1.png',
+  'images/observer_smoking_22_2.png',
+  'images/observer_smoking_22_3.png',
+  'images/observer_smoking_22_4.png',
+  'images/observer_smoking_22_5.png',
+  'images/observer_smoking_22_6.png',
+  'images/observer_smoking_22_7.png',
+  'images/observer_smoking_22_8.png',
+  'images/observer_smoking_22_9.png',
+  'images/observer_smoking_22_.png',
+  'images/observer_smoking_23.png',
+  'images/observer_smoking_24.png',
+  'images/observer_smoking_25.png',
+  'images/observer_smoking_26.png',
+  'images/observer_smoking_27.png',
+  'images/observer_smoking_28.png'
+];
 const defaultX = 534;
 const initialX = 325;
 const defaultY = 151;
@@ -36,6 +76,7 @@ const kneelingHeight = 300;
 const kneelingWidthOffset = kneelingWidth/2.5;
 const kneelingHeightOffset = kneelingHeight/2.9;
 const TO_RADIANS = Math.PI/180;
+const smokingTimerTotal = 60*4;
 
 class Observer {
   constructor(opts = {}) {
@@ -62,10 +103,24 @@ class Observer {
     this.shooting = false;
     this.shootingCounter = 0;
     this.firstClick = false;
+    this.smokingTimer = 0;
+    this.smokingCounter = 0;
+    this.smoking = false;
+    this.stopSmoking = false;
   }
 
   render(ctx, tickCount) {
     this._updatePosition();
+
+    this.smokingTimer += 1;
+    if(this.walking || this.kneeling || this.standup || this.smoking || !this.firstClick) {
+      this.smokingTimer = 0;
+    }
+    if(!this.walking && !this.kneeling && !this.standup && !this.smoking && this.firstClick && this.smokingTimer >= smokingTimerTotal) {
+      this.smokingTimer = 0;
+      this.smokingCounter = 0;
+      this.smoking = true;
+    }
 
     //if observer is kneeling and not in the process of kneeling then draw the gun
     const drawGun = this.kneeling && this.kneelingCounter > 90;
@@ -92,7 +147,10 @@ class Observer {
     //draw observer walking/kneeling/standingup
     // const observerArgs = this.kneeling ? this.kneelingObserverArgs : this.walkingObserverArgs;
     let observerArgs;
-    if(this.standup) {
+
+    if(this.smoking) {
+      observerArgs = this.smokingObserverArgs;
+    } else if(this.standup) {
       observerArgs = this.standupObserverArgs;
     } else if(this.kneeling) {
       observerArgs = this.kneelingObserverArgs
@@ -101,6 +159,7 @@ class Observer {
     } else {
       observerArgs = this.stationaryObserverArgs;
     }
+
     ctx.drawImage(...observerArgs);
 
     ctx.restore();
@@ -144,12 +203,19 @@ class Observer {
     });
 
     eventEmitter.on('mousemove', (x, y) =>  {
-      if(!this.kneeling) { return; };
+      // if(!this.kneeling) { return; };
       this._handleMouseMove(x, y);
     });
   }
 
   _handleClick(x, y) {
+
+    this.smokingTimer = 0;
+    if(this.smoking) {
+      this.stopSmoking = true;
+      return;
+    }
+
     //always stop walking
     if(this.walking) {
       this.walking = false;
@@ -192,6 +258,9 @@ class Observer {
   }
 
   _handleMouseMove(x, y) {
+    this.smokingTimer = 0;
+
+    if(!this.kneeling) { return; };
     //left side of observer
     this.kneelingLeft = x - (width/2) < this.x;
 
@@ -294,6 +363,86 @@ class Observer {
     if(this.standupCounter >= 60) {
       this.standup = false;
       this.standupCounter = 0;
+    }
+
+    return img;
+  }
+
+  _smokingImage() {
+    this.smokingCounter += .85;
+    let img;
+
+    let pace = this.smokingCounter;
+
+    if(pace >= 0 && pace < 10) {
+      img = smokingURLS[0];
+    } else if(pace >= 10 && pace < 20) {
+      img = smokingURLS[1];
+    } else if(pace >= 20 && pace < 30) {
+      img = smokingURLS[2];
+    } else if(pace >= 30 && pace < 40) {
+      img = smokingURLS[3];
+    } else if(pace >= 40 && pace < 50) {
+      img = smokingURLS[4];
+    } else if(pace >= 50 && pace < 60) {
+      img = smokingURLS[5];
+    } else if(pace >= 60 && pace < 70) {
+      img = smokingURLS[6];
+    } else if(pace >= 70 && pace < 80) {
+      img = smokingURLS[7];
+    } else if(pace >= 80 && pace < 90) {
+      img = smokingURLS[8];
+    } else if(pace >= 90 && pace < 100) {
+      img = smokingURLS[9];
+    } else if(pace >= 100 && pace < 110) {
+      img = smokingURLS[10];
+    } else if(pace >= 110 && pace < 120) {
+      img = smokingURLS[11];
+    } else if(pace >= 120 && pace < 130) {
+      img = smokingURLS[12];
+    } else if(pace >= 130 && pace < 140) {
+      img = smokingURLS[13];
+    } else if(pace >= 140 && pace < 150) {
+      img = smokingURLS[14];
+    } else if(pace >= 150 && pace < 160) {
+      img = smokingURLS[15];
+    } else if(pace >= 160 && pace < 170) {
+      img = smokingURLS[16];
+    } else if(pace >= 170 && pace < 180) {
+      img = smokingURLS[17];
+    } else if(pace >= 180 && pace < 190) {
+      img = smokingURLS[18];
+    } else if(pace >= 190 && pace < 200) {
+      img = smokingURLS[19];
+    } else if(pace >= 200 && pace < 210) {
+      img = smokingURLS[20];
+    } else if(pace >= 210 && pace < 220) {
+      img = this.stopSmoking ? smokingURLS[30] : smokingURLS[29];
+    } else if(pace >= 220 && pace < 230) {
+      img = this.stopSmoking ? smokingURLS[31] : smokingURLS[21];
+    } else if(pace >= 230 && pace < 240) {
+      img = this.stopSmoking ? smokingURLS[32] : smokingURLS[22];
+    } else if(pace >= 240 && pace < 250) {
+      img = this.stopSmoking ? smokingURLS[33] : smokingURLS[23];
+    } else if(pace >= 250 && pace < 260) {
+      img = this.stopSmoking ? smokingURLS[34] : smokingURLS[24];
+    } else if(pace >= 260 && pace < 270) {
+      img = this.stopSmoking ? smokingURLS[35] : smokingURLS[25];
+    } else if(pace >= 270 && pace < 280) {
+      img = smokingURLS[26];
+    } else {
+      img = smokingURLS[27];
+    }
+
+    if(this.smokingCounter >= (this.stopSmoking ? 269 : 290)) {
+      if(this.stopSmoking) {
+        this.smoking = false;
+        this.stopSmoking = false;
+        this.smokingCounter = 0;
+      } else {
+        this.smoking = true;
+        this.smokingCounter = 210;
+      }
     }
 
     return img;
@@ -458,6 +607,16 @@ class Observer {
       kneelingWidth,
       kneelingHeight
     ];
+  }
+
+  get smokingObserverArgs() {
+    return [
+      this.resources.get(this._smokingImage()),
+      Math.round(this._rotateX(this.x + 4, width)),
+      Math.round(this.y + 3),
+      this.width,
+      this.height
+    ]
   }
 
   get gunArmArgs() {
