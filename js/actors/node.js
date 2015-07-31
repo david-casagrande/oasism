@@ -144,7 +144,7 @@ class Node {
           const x = this.newX;
           const y = this.newY;
           if(x > area.x && x < area.x + area.width && y > area.y && y < area.y + area.height) {
-            console.log(area);
+            // console.log(area);
             area.falling = true;
             area.blasted = true;
           }

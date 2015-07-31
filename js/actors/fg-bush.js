@@ -16,7 +16,7 @@ class FGBush {
     this.resources = opts.resources;
     this.counter = 0;
     this.totalCounter = 0;
-    this.modulus = 10;
+    this.modulus = possibleModuli[2];
     this.eventEmitter = opts.eventEmitter;
     this.active = false;
     this._registerEvents(opts.eventEmitter);

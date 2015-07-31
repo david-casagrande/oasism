@@ -21,6 +21,7 @@ import Gas from './actors/gas';
 import Node from './actors/node';
 import GunArm from './actors/gun-arm';
 import BlastAreaManager from './blast-area-manager';
+import MDGManager from './mdg-manager';
 
 (function() {
   const canvas = new Canvas();
@@ -78,6 +79,7 @@ import BlastAreaManager from './blast-area-manager';
   let gila = new Gila({ resources: resources, eventEmitter: emitter });
   let gas = new Gas({ resources: resources, eventEmitter: emitter });
   let blastAreaManager = new BlastAreaManager({ resources: resources, eventEmitter: emitter, gas: gas });
+  let mdgManager = new MDGManager({ resources: resources });
 
   function init() {
     lastTime = Date.now();
@@ -101,7 +103,8 @@ import BlastAreaManager from './blast-area-manager';
 
     fgCloud.render(ctx);
 
-    ctx.drawImage(resources.get('images/rocks-and-gila.png'), startX, startY);
+    mdgManager.render(ctx, tickCount);
+
     mdgBush.render(ctx, tickCount);
     mdgLeaves.render(ctx, tickCount);
     mdgTree.render(ctx, tickCount);

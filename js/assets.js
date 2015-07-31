@@ -119,6 +119,20 @@ const Assets = [
   'images/observer_gunarm_right_1.png',
   'images/observer_gunarm_right_2.png',
   'images/observer_gunarm_right_3.png',
+  'images/mdgrocks_new_01.png',
+  'images/mdgrocks_new_02.png',
+  'images/mdgrocks_new_03.png',
+  'images/mdgrocks_new_04.png',
+  'images/mdgrocks_new_05.png',
+  'images/1stwave_rock_16_01.png',
+  'images/1stwave_rock_17_01.png',
+  'images/1stwave_rock_18_01.png',
+  'images/1stwave_rock_14.png',
+  'images/1stwave_rock_10.png',
+  'images/bones.png',
+  'images/skull.png',
+  'images/mdg_rocks.png',
+
 ];
 
 export default Assets;

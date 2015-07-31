@@ -1,7 +1,7 @@
 import BlastAreas from './blast-areas';
 
 const startX = 0;
-const startY = -30;
+const startY = -29;
 
 class BlastAreaManager {
   constructor(opts = {}) {
@@ -37,7 +37,7 @@ class BlastAreaManager {
     this._drawRockOL(rock, ctx);
 
     //draw the rock
-    this._drawRock(rock, ctx);
+    // this._drawRock(rock, ctx);
 
     //check for gas rendering
     this._drawGas(rock, idx);
