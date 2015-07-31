@@ -26,7 +26,8 @@ const urls = [
   'images/observer_gunarm_right_2.png',
   'images/observer_gunarm_right_3.png'
 ];
-const defaultX = 325;
+const defaultX = 534;
+const initialX = 325;
 const defaultY = 151;
 const width = 40;
 const height = 90;
@@ -60,6 +61,7 @@ class Observer {
     this.node = opts.node;
     this.shooting = false;
     this.shootingCounter = 0;
+    this.firstClick = false;
   }
 
   render(ctx, tickCount) {
@@ -151,6 +153,16 @@ class Observer {
     //always stop walking
     if(this.walking) {
       this.walking = false;
+      return;
+    }
+
+    //detect first click
+    if(!this.firstClick) {
+      //first steps
+      this.walking = true;
+      this.newX =  initialX;
+      this.newY = defaultY;
+      this.firstClick = true;
       return;
     }
 
