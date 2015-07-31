@@ -45,6 +45,11 @@ import MDGManager from './mdg-manager';
   purchaseLink.innerHTML = '<strong>USF <em>OASISM</em></strong><br /><span>AVAILABLE NOW</span><br /><a href="https://usftheband.bandcamp.com/album/oasism" target="_BLANK">PURCHASE</a>';
   document.body.appendChild(purchaseLink);
 
+  const credits = document.createElement('div');
+  credits.classList.add('credits');
+  credits.innerHTML = '<span>design: </span><a href="http://danmiller.com" target="_BLANK">Dan Miller</a> | <span>code: </span><a href="http://davidcasagrande.com" target="_BLANK">David Casagrande</a>';
+  document.body.appendChild(credits);
+
   //oasism.appendChild(artist);
 
   canvas.render(oasism);
