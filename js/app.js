@@ -64,7 +64,6 @@ import MDGManager from './mdg-manager';
   //oasism.appendChild(artist);
 
   canvas.render(oasism);
-  audioPlayer.render();
 
   // oasism.appendChild(title);
   oasism.appendChild(instructions);
@@ -99,6 +98,7 @@ import MDGManager from './mdg-manager';
   let mdgManager = new MDGManager({ resources: resources });
 
   function init() {
+    audioPlayer.render();
     lastTime = Date.now();
     main();
   };
