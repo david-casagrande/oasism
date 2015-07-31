@@ -30,7 +30,7 @@
     "broccoli-merge-trees": "^0.2.1"
   },
   "dependencies": {
-    "common-soundcloud": "git://github.com/david-casagrande/common-soundcloud.git#additional_events",
+    "common-soundcloud": "git://github.com/david-casagrande/common-soundcloud.git#master",
     "event-emitter": "^0.3.3",
     "icono": "^0.9.5",
     "raf": "^2.0.4",

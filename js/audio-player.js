@@ -27,21 +27,27 @@ function pauseControl(sc) {
   pause.classList.add('play-pause');
   pauseButton.classList.add('icono-pause');
 
+  //add pause button
   pause.addEventListener('click', function() {
     sc.player.isPaused(function(paused) {
-
-      let classList = pauseButton.classList;
-
       if (paused) {
         sc.player.play();
-        classList.add('icono-pause');
-        classList.remove('icono-play');
       } else {
         sc.player.pause();
-        classList.remove('icono-pause');
-        classList.add('icono-play');
       }
     });
+  });
+
+  //bind pause class button to pause/play
+  let classList = pauseButton.classList;
+  sc.on('pause', () => {
+    classList.remove('icono-pause');
+    classList.add('icono-play');
+  });
+
+  sc.on('play', () => {
+    classList.add('icono-pause');
+    classList.remove('icono-play');
   });
 
   pause.appendChild(pauseButton);
@@ -119,6 +125,13 @@ class AudioPlayer {
     this.sc.on('play', () => {
       this.sc.player.getCurrentSound(function(sound) {
         track.title.innerHTML = sound.title;
+      });
+    });
+
+    this.sc.on('end', (e) => {
+      this.sc.player.getDuration((duration) => {
+        if(e.currentPosition < duration) { return; }
+        this.sc.skip(0);
       });
     });
 
