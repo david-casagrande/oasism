@@ -54,6 +54,13 @@ import MDGManager from './mdg-manager';
   credits.innerHTML = '<span>design: </span><strong href="#" target="_BLANK">Dan Miller</strong> | <span>code: </span><a href="http://davidcasagrande.com" target="_BLANK">David Casagrande</a>';
   document.body.appendChild(credits);
 
+  const logo = document.createElement('a');
+  logo.classList.add('ceremony-logo');
+  logo.href = 'http://ceremonyrecordings.com';
+  logo.target = '_BLANK';
+  logo.innerHTML = '<img src="images/ceremony-logo.png" alt="Ceremony Records"/>';
+  document.body.appendChild(logo);
+
   //oasism.appendChild(artist);
 
   canvas.render(oasism);
