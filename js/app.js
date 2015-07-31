@@ -35,7 +35,7 @@ import MDGManager from './mdg-manager';
 
   const instructions = document.createElement('div');
   instructions.classList.add('instructions');
-  instructions.innerHTML = 'Welcome to the desert. Move your avatar by clicking on a point inside the frame. Click on the avatar to activate your tools. Explore your surroundings. USF <em>OASISM</em> EP out now on <a href="https://usftheband.bandcamp.com/album/oasism" target="_BLANK">Ceremony.</a>';
+  instructions.innerHTML = 'Welcome to the desert. Move your avatar by clicking on a point inside the frame. Click on the avatar to activate your tools.<br />Explore your surroundings. USF <em>OASISM</em> EP out now on <a href="https://usftheband.bandcamp.com/album/oasism" target="_BLANK">Ceremony.</a>';
 
   const title = document.createElement('h1');
   title.innerHTML = 'OASISM';
@@ -58,7 +58,7 @@ import MDGManager from './mdg-manager';
   logo.classList.add('ceremony-logo');
   logo.href = 'http://ceremonyrecordings.com';
   logo.target = '_BLANK';
-  logo.innerHTML = '<img src="images/ceremony-logo.png" alt="Ceremony Records"/>';
+  logo.innerHTML = '<img src="./images/ceremony-logo.png" alt="Ceremony Records"/>';
   document.body.appendChild(logo);
 
   //oasism.appendChild(artist);
