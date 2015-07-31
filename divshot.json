@@ -2,5 +2,8 @@
   "name": "oasism",
   "root": "dist",
   "clean_urls": true,
-  "error_page": "error.html"
+  "error_page": "error.html",
+  "redirects": {
+    "/": "http://usftheband.com/oasism"
+  }
 }
