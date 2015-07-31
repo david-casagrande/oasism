@@ -12,7 +12,7 @@ const Assets = [
   'images/fgbush_leaves_5.png',
   'images/fgbush_leaves_6.png',
   'images/fgbush_leaves_7.png',
-  'images/rocks-and-gila.png',
+  // 'images/rocks-and-gila.png',
   'images/mdg-tree.png',
   'images/mdgtree.png',
   'images/mdgtree_2.png',
@@ -131,7 +131,7 @@ const Assets = [
   'images/1stwave_rock_10.png',
   'images/bones.png',
   'images/skull.png',
-  'images/mdg_rocks.png',
+  // 'images/mdg_rocks.png',
 
 ];
 
