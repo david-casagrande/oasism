@@ -33,6 +33,10 @@ import MDGManager from './mdg-manager';
   const oasism = document.createElement('div');
   oasism.classList.add('oasism', 'centered');
 
+  const instructions = document.createElement('div');
+  instructions.classList.add('instructions');
+  instructions.innerHTML = 'Welcome to the desert. Move your avatar by clicking on a point inside the frame. Click on the avatar to activate your tools. Explore your surroundings. USF <em>OASISM</em> EP out now on <a href="https://usftheband.bandcamp.com/album/oasism" target="_BLANK">Ceremony.</a>';
+
   const title = document.createElement('h1');
   title.innerHTML = 'OASISM';
 
@@ -47,7 +51,7 @@ import MDGManager from './mdg-manager';
 
   const credits = document.createElement('div');
   credits.classList.add('credits');
-  credits.innerHTML = '<span>design: </span><a href="http://danmiller.com" target="_BLANK">Dan Miller</a> | <span>code: </span><a href="http://davidcasagrande.com" target="_BLANK">David Casagrande</a>';
+  credits.innerHTML = '<span>design: </span><strong href="#" target="_BLANK">Dan Miller</strong> | <span>code: </span><a href="http://davidcasagrande.com" target="_BLANK">David Casagrande</a>';
   document.body.appendChild(credits);
 
   //oasism.appendChild(artist);
@@ -56,6 +60,7 @@ import MDGManager from './mdg-manager';
   audioPlayer.render();
 
   // oasism.appendChild(title);
+  oasism.appendChild(instructions);
   document.body.appendChild(oasism);
 
   resources.load(Assets);
