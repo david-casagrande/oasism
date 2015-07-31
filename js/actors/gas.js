@@ -1,3 +1,5 @@
+import randomNumber from '../utils/random-number';
+
 const urls = [
   'images/gas_1.png',
   'images/gas_2.png',
@@ -12,6 +14,15 @@ const urls = [
   'images/gas_2_5.png'
 ];
 
+const possibleModuli = [
+  200,
+  100,
+  240,
+  120,
+  150,
+  170
+];
+
 class Gas {
   constructor(opts = {}) {
     this.resources = opts.resources;
@@ -19,10 +30,20 @@ class Gas {
     this.y = opts.y || -30;
     this.counter = 0;
     this.visible = false;
+    this.modulus = possibleModuli[2];
+    this.totalCounter = 0;
+    this.active = true;
   }
 
   render(ctx, tickCount) {
     if(!this.visible) { return; }
+    this.totalCounter += 1;
+
+    if(this.totalCounter % this.modulus === 0) {
+      this.active = true;
+    }
+
+    if(!this.active) { return; }
     this.counter += 1;
 
     this._drawGas1(ctx);
@@ -30,7 +51,20 @@ class Gas {
 
     if(this.counter > 120) {
       this.counter = 0;
+      this.active = false;
+      this._setNewModulus();
+      // this.modulus =
     }
+  }
+
+  _setNewModulus() {
+    let newModulus = possibleModuli[randomNumber(0, possibleModuli.length)];
+
+    if(typeof newModulus === 'undefined') {
+      newModulus = possibleModuli[0];
+    }
+
+    this.modulus = newModulus;
   }
 
   _drawGas1(ctx) {
