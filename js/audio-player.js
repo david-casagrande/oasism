@@ -129,10 +129,17 @@ class AudioPlayer {
     });
 
     this.sc.on('end', (e) => {
-      this.sc.player.getDuration((duration) => {
-        if(e.currentPosition < duration) { return; }
+      this.sc.player.isPaused((paused) => {
+        if(!paused) { return; }
         this.sc.skip(0);
       });
+
+      // this.sc.player.getDuration((duration) => {
+      //   console.log(e.currentPosition, duration)
+      //   if(e.currentPosition < duration) { return; }
+      //   console.log('repeat');
+      //   // this.sc.skip(0);
+      // });
     });
 
     this.sc.on('playProgress', (e) => {
