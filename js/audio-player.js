@@ -1,6 +1,6 @@
 import SoundCloud from 'common-soundcloud';
 
-const url = 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/122749373%3Fsecret_token%3Ds-2mkWN&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=false';
+const url = 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/129981973%3Fsecret_token%3Ds-HqXau&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=false';
 
 function buildIframe() {
   const iframe = document.createElement('iframe');
