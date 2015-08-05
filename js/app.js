@@ -51,7 +51,7 @@ import MDGManager from './mdg-manager';
 
   const credits = document.createElement('div');
   credits.classList.add('credits');
-  credits.innerHTML = '<span>design: </span><a href="http://bydanielmiller.com" target="_BLANK">Dan Miller</a> | <span>code: </span><a href="https://github.com/david-casagrande/oasism" target="_BLANK">David Casagrande</a>';
+  credits.innerHTML = '<span>design: </span><a href="http://bydanielmiller.com" target="_BLANK">Daniel Miller</a> | <span>code: </span><a href="https://github.com/david-casagrande/oasism" target="_BLANK">David Casagrande</a>';
   document.body.appendChild(credits);
 
   const logo = document.createElement('a');
